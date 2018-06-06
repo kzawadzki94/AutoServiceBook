@@ -1,11 +1,15 @@
+using AutoServiceBook.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Identity;
+using AutoServiceBook.Models;
 
 namespace AutoServiceBook
 {
@@ -29,6 +33,13 @@ namespace AutoServiceBook
                 configuration.RootPath = "ClientApp/build";
             });
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Car Service Book", Version = "v1" }));
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +78,8 @@ namespace AutoServiceBook
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseAuthentication();
         }
     }
 }

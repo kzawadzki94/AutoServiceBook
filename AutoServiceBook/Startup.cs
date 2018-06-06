@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AutoServiceBook
 {
@@ -27,6 +28,7 @@ namespace AutoServiceBook
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Car Service Book", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +43,9 @@ namespace AutoServiceBook
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Service Book API v1"));
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

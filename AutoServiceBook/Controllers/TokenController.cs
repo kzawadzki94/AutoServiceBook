@@ -39,9 +39,9 @@ namespace AutoServiceBook.Controllers
             if (user == null)
                 return NotFound("User not found!");
 
-            var signInResult = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+            var checkPasswordResult = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
 
-            if (!signInResult.Succeeded)
+            if (!checkPasswordResult.Succeeded)
                 return Unauthorized();
 
             var claims = new[]

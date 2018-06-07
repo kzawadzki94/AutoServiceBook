@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Identity;
 using AutoServiceBook.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace AutoServiceBook
 {
@@ -38,8 +41,24 @@ namespace AutoServiceBook
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddCookie()
+                    .AddJwtBearer(jwtOptions =>
+                    {
+                        jwtOptions.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                            ValidAudience = Configuration["Token:Audience"],
+                            ValidIssuer = Configuration["Token:Issuer"],
+                            ValidateIssuerSigningKey = true,
+                            ValidateLifetime = true,
+                            ValidateAudience = false,
+                            ValidateActor = false
+                        };
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

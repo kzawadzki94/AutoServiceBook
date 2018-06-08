@@ -36,5 +36,23 @@ namespace AutoServiceBook.Controllers
 
             return Json(mapper.Map<AppUser, UserInfoResponse>(user));
         }
+
+        //POST: api/Account/Register
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(RegisterAccountRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = mapper.Map<AppUser>(request);
+                var createActionResult = await userManager.CreateAsync(user, request.Password);
+
+                if (createActionResult.Succeeded)
+                    Ok("User created");
+                else
+                    return Json(createActionResult.Errors);
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

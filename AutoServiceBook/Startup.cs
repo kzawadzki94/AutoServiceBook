@@ -17,6 +17,8 @@ using AutoServiceBook.Swagger;
 using System.IdentityModel.Tokens.Jwt;
 using AutoServiceBook.Models.Responses;
 using AutoMapper;
+using AutoServiceBook.Models.Requests;
+using AutoServiceBook.MappingProfiles;
 
 namespace AutoServiceBook
 {
@@ -80,15 +82,7 @@ namespace AutoServiceBook
                 };
             });
 
-
-            var autoMapperConfig = new AutoMapper.MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<AppUser, UserInfoResponse>();
-            });
-
-            autoMapperConfig.CreateMapper();
-
-            services.AddAutoMapper();
+            services.AddAutoMapper(x => x.AddProfile(new AppUserMappingsProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

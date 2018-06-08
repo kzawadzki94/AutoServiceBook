@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace AutoServiceBook.Controllers
         public async Task<IActionResult> Post(SignInRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
             var user = await userManager.FindByEmailAsync(request.Email);
 

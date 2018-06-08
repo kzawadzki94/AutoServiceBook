@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -48,11 +49,11 @@ namespace AutoServiceBook.Controllers
                 var createActionResult = await userManager.CreateAsync(user, request.Password);
 
                 if (createActionResult.Succeeded)
-                    Ok("User created");
+                    return Ok("User created");
                 else
                     return Json(createActionResult.Errors);
             }
-            return BadRequest(ModelState);
+            return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
         }
     }
 }

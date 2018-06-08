@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using AutoServiceBook.Models;
 using AutoServiceBook.Models.Requests;
+using AutoServiceBook.Models.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,10 +17,12 @@ namespace AutoServiceBook.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly IMapper mapper;
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(UserManager<AppUser> userManager, IMapper mapper)
         {
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         //GET: api/Account/
@@ -30,7 +34,7 @@ namespace AutoServiceBook.Controllers
             if (user == null)
                 return NotFound("User not found!");
 
-            return Json(user);
+            return Json(mapper.Map<AppUser, UserInfoResponse>(user));
         }
     }
 }

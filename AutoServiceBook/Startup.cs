@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoServiceBook.Swagger;
 using System.IdentityModel.Tokens.Jwt;
+using AutoServiceBook.Models.Responses;
+using AutoMapper;
 
 namespace AutoServiceBook
 {
@@ -56,27 +58,37 @@ namespace AutoServiceBook
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
-                    {
-                        options.ClaimsIdentity.UserNameClaimType = JwtRegisteredClaimNames.Sub;
-                    })
-                    .AddEntityFrameworkStores<AppDbContext>()
-                    .AddDefaultTokenProviders();
+            {
+                options.ClaimsIdentity.UserNameClaimType = JwtRegisteredClaimNames.Sub;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddCookie()
-                    .AddJwtBearer(jwtOptions =>
-                    {
-                        jwtOptions.TokenValidationParameters = new TokenValidationParameters()
-                        {
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
-                            ValidAudience = Configuration["Token:Audience"],
-                            ValidIssuer = Configuration["Token:Issuer"],
-                            ValidateIssuerSigningKey = true,
-                            ValidateLifetime = true,
-                            ValidateAudience = false,
-                            ValidateActor = false
-                        };
-                    });
+            .AddCookie()
+            .AddJwtBearer(jwtOptions =>
+            {
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                    ValidAudience = Configuration["Token:Audience"],
+                    ValidIssuer = Configuration["Token:Issuer"],
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidateAudience = false,
+                    ValidateActor = false
+                };
+            });
+
+
+            var autoMapperConfig = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<AppUser, UserInfoResponse>();
+            });
+
+            autoMapperConfig.CreateMapper();
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

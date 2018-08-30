@@ -1,7 +1,6 @@
 using AutoServiceBook.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoServiceBook.Swagger;
 using System.IdentityModel.Tokens.Jwt;
-using AutoServiceBook.Models.Responses;
 using AutoMapper;
-using AutoServiceBook.Models.Requests;
 using AutoServiceBook.MappingProfiles;
 
 namespace AutoServiceBook

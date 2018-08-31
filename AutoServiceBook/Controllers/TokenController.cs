@@ -30,7 +30,7 @@ namespace AutoServiceBook.Controllers
 
         //POST: api/token
         [HttpPost]
-        public async Task<IActionResult> Post(SignInRequest request)
+        public async Task<IActionResult> Post([FromBody]SignInRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.Values.SelectMany(m => m.Errors));

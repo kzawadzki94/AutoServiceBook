@@ -38,7 +38,6 @@ export default class AuthenticationService {
                 return false;
             }
         } catch (err) {
-            console.log(err);
             return false;
         }
     }

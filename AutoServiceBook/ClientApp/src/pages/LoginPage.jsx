@@ -3,7 +3,7 @@ import { Well, FormGroup, FormControl, Button, Alert } from 'react-bootstrap';
 import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 
-export class LoginForm extends Component {
+export class LoginPage extends Component {
     constructor() {
         super();
         this.handleChange = this.handleChange.bind(this);
@@ -16,12 +16,6 @@ export class LoginForm extends Component {
             email: '',
             password: '',
             loginError: null
-        }
-    }
-
-    componentWillMount() {
-        if (this.auth.isUserLoggedIn()) {
-            this.props.history.replace('/');
         }
     }
 

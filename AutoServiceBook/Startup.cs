@@ -1,11 +1,21 @@
+using AutoServiceBook.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Identity;
+using AutoServiceBook.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using AutoServiceBook.Swagger;
+using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
+using AutoServiceBook.MappingProfiles;
 
 namespace AutoServiceBook
 {
@@ -28,7 +38,48 @@ namespace AutoServiceBook
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Car Service Book", Version = "v1" }));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Car Service Book", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "Authorization header using the Bearer scheme",
+                    Name = "Authorization",
+                    In = "header"
+                });
+
+                c.DocumentFilter<SwaggerSecurityRequirementsDocumentFilter>();
+            });
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = JwtRegisteredClaimNames.Sub;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddCookie()
+            .AddJwtBearer(jwtOptions =>
+            {
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                    ValidAudience = Configuration["Token:Audience"],
+                    ValidIssuer = Configuration["Token:Issuer"],
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidateAudience = false,
+                    ValidateActor = false
+                };
+            });
+
+            services.AddAutoMapper(x => x.AddProfile(new AppUserMappingsProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +118,8 @@ namespace AutoServiceBook
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseAuthentication();
         }
     }
 }

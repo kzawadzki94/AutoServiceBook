@@ -13,7 +13,9 @@ export class Layout extends Component {
             <NavMenu />
           </Col>
           <Col sm={9}>
-            {this.props.children}
+            <div className="page-wrapper">
+              {this.props.children}
+            </div>
           </Col>
         </Row>
       </Grid>

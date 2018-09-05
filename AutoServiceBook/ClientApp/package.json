@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "bootswatch": "^3.3.7",
     "eslint": "^5.4.0",
     "jwt-decode": "^2.2.0",
     "node-sass-chokidar": "^1.3.3",

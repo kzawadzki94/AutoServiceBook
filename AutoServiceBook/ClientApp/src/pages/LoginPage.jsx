@@ -23,7 +23,7 @@ export class LoginPage extends Component {
         return (
             <div className="center">
                 <Well>
-                    <h1>Login</h1>
+                    <h2>Login</h2>
 
                     <form onSubmit={this.handleSubmit}>
                         <FormGroup controlId="email" validationState={this.getEmailValidationState()}>
@@ -36,7 +36,7 @@ export class LoginPage extends Component {
                             <FormControl.Feedback />
                         </FormGroup>
 
-                        <Button type="submit" disabled={this.state.buttonDisabled}>Log in</Button>
+                        <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Log in</Button>
 
                         <AlertBox error={this.state.loginError}></AlertBox>
                     </form>
@@ -107,6 +107,8 @@ function AlertBox(props) {
     }
 
     return (
-        <Alert bsStyle="danger">{message}</Alert>
+        <div className="with-padding-vertical">
+            <Alert bsStyle="danger">{message}</Alert>
+        </div>
     );
 }

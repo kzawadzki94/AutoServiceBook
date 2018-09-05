@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { ProgressBar, Row } from 'react-bootstrap'
 import AuthenticationService from '../utils/authentication/AuthenticationService';
-
+import AccountService from '../utils/account/AccountService';
 
 export class LogoutPage extends Component {
     constructor() {
         super();
         this.auth = new AuthenticationService();
+        this.account = new AccountService(this.auth);
         this.state = {
             progress: 0
         };
@@ -23,6 +24,7 @@ export class LogoutPage extends Component {
             if (this.state.progress > 100) {
                 clearInterval(intervalId);
                 this.auth.logout();
+                this.account.destroyInfo();
                 this.props.history.push('/login');
             }
 

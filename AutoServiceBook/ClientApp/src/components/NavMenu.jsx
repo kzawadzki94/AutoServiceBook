@@ -43,9 +43,14 @@ function MenuLinks(props) {
 function AuthorizedMenuLinks() {
   return (
     <React.Fragment>
-      <LinkContainer to={'/'}>
+      <LinkContainer to={'/home'}>
         <NavItem>
           <Glyphicon glyph='home' /> Home
+      </NavItem>
+      </LinkContainer>
+      <LinkContainer to={'/account'}>
+        <NavItem>
+          <Glyphicon glyph='user' /> Account
       </NavItem>
       </LinkContainer>
       <LinkContainer to={'/logout'}>

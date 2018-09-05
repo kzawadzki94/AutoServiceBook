@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ProgressBar } from 'react-bootstrap'
+import { ProgressBar, Row } from 'react-bootstrap'
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 
 
@@ -31,7 +31,9 @@ export class LogoutPage extends Component {
 
     render() {
         return (
-            <ProgressBar now={this.state.progress} label="Logging out..." />
+            <Row>
+                <ProgressBar now={this.state.progress} striped active />
+            </Row>
         );
     }
 }

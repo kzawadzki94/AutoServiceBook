@@ -7,9 +7,6 @@ export class EmailInput extends Component {
         super(props);
 
         this.validator = new UserCredentialsValidator();
-        this.validationState = this.validationState.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
         this.state = {
             email: ''
         };
@@ -27,7 +24,7 @@ export class EmailInput extends Component {
         );
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         this.props.onChange(e);
         this.setState(
             {
@@ -36,7 +33,7 @@ export class EmailInput extends Component {
         );
     }
 
-    validationState() {
+    validationState = () => {
         if (this.state.email === '') {
             return;
         }

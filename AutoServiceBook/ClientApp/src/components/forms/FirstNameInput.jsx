@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
-import UserCredentialsValidator from '../../utils/validation/UserCredentialsValidator';
 
-export class PasswordInput extends Component {
+export class FirstNameInput extends Component {
     constructor(props) {
         super(props);
 
-        this.validator = new UserCredentialsValidator();
         this.state = {
-            password: ''
+            firstname: ''
         };
     }
 
     render() {
         return (
-            <FormGroup controlId="password" validationState={this.validationState()}>
+            <FormGroup controlId="firstname" validationState={this.validationState()}>
                 <InputGroup>
-                    <InputGroup.Addon><Glyphicon glyph='asterisk' /></InputGroup.Addon>
-                    <FormControl type="password" placeholder="Password" onChange={this.handleChange} />
+                    <InputGroup.Addon><Glyphicon glyph='user' /></InputGroup.Addon>
+                    <FormControl type="text" placeholder="First Name" onChange={this.handleChange} />
                     <FormControl.Feedback />
                 </InputGroup>
             </FormGroup>
@@ -34,11 +32,11 @@ export class PasswordInput extends Component {
     }
 
     validationState = () => {
-        if (this.state.password === '' || !this.props.validate) {
+        if (this.state.firstname === '') {
             return;
         }
 
-        if (this.validator.validatePassword(this.state.password)) {
+        if (this.state.firstname.length > 0) {
             return 'success';
         }
         return 'error';

@@ -9,8 +9,6 @@ import UserCredentialsValidator from '../utils/validation/UserCredentialsValidat
 export class LoginPage extends Component {
     constructor() {
         super();
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.validator = new UserCredentialsValidator();
         this.auth = new AuthenticationService();
         this.account = new AccountService(this.auth);
@@ -54,7 +52,7 @@ export class LoginPage extends Component {
         }
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState(
             {
                 [e.target.id]: e.target.value
@@ -62,7 +60,7 @@ export class LoginPage extends Component {
         );
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         this.auth.login(this.state.email, this.state.password)
@@ -93,7 +91,7 @@ function AlertBox(props) {
 
     return (
         <div className="with-padding-vertical">
-            <Alert bsStyle="danger">{message}</Alert>
+            <Alert bsStyle="danger"><p>{message}</p></Alert>
         </div>
     );
 }

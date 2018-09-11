@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, Button, Alert, InputGroup, Glyphicon } from 'react-bootstrap';
-import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
+import { Button, Alert } from 'react-bootstrap';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import AccountService from '../utils/account/AccountService';
+import { EmailInput } from '../components/forms/EmailInput';
+import { PasswordInput } from '../components/forms/PasswordInput';
+import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
 
 export class LoginPage extends Component {
     constructor() {
         super();
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.validator = new UserCredentialsValidator();
         this.auth = new AuthenticationService();
         this.account = new AccountService(this.auth);
@@ -27,21 +27,8 @@ export class LoginPage extends Component {
                 <h2>Login</h2>
 
                 <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="email" validationState={this.getEmailValidationState()}>
-                        <InputGroup>
-                            <InputGroup.Addon><Glyphicon glyph='envelope' /></InputGroup.Addon>
-                            <FormControl type="text" placeholder="E-mail" onChange={this.handleChange} />
-                            <FormControl.Feedback />
-                        </InputGroup>
-                    </FormGroup>
-
-                    <FormGroup controlId="password">
-                        <InputGroup>
-                            <InputGroup.Addon><Glyphicon glyph='asterisk' /></InputGroup.Addon>
-                            <FormControl type="password" placeholder="Password" onChange={this.handleChange} />
-                            <FormControl.Feedback />
-                        </InputGroup>
-                    </FormGroup>
+                    <EmailInput onChange={this.handleChange} />
+                    <PasswordInput onChange={this.handleChange} />
 
                     <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Log in</Button>
 
@@ -65,26 +52,15 @@ export class LoginPage extends Component {
         }
     }
 
-    getEmailValidationState() {
-        if (this.state.email === '') {
-            return;
-        }
-
-        if (this.validator.validateEmail(this.state.email)) {
-            return 'success';
-        }
-        return 'error';
-    }
-
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState(
             {
                 [e.target.id]: e.target.value
             }
-        )
+        );
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         this.auth.login(this.state.email, this.state.password)
@@ -115,7 +91,7 @@ function AlertBox(props) {
 
     return (
         <div className="with-padding-vertical">
-            <Alert bsStyle="danger">{message}</Alert>
+            <Alert bsStyle="danger"><p>{message}</p></Alert>
         </div>
     );
 }

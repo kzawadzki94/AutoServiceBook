@@ -41,7 +41,7 @@ namespace AutoServiceBook.Controllers
         //POST: api/Account/Register
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterAccountRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterAccountRequest request)
         {
             if (ModelState.IsValid)
             {

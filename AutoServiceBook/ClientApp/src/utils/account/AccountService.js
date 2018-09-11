@@ -9,6 +9,20 @@ export default class AccountService {
         this.auth = auth || new AuthenticationService();
     }
 
+    register(firstname, lastname, email, password) {
+        return this.auth.fetch(`${this.domain}/account/register`, {
+            method: 'POST',
+            body: JSON.stringify({
+                firstname,
+                lastname,
+                email,
+                password
+            })
+        }).then(response => {
+            return Promise.resolve(response);
+        });
+    }
+
     fetchInfo() {
         this.auth.fetch(`${this.domain}/account`, {
             method: 'GET'

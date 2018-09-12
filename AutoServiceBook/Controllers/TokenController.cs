@@ -1,9 +1,3 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using AutoServiceBook.Models;
 using AutoServiceBook.Models.Requests;
 using AutoServiceBook.Models.Responses;
@@ -11,6 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AutoServiceBook.Controllers
 {
@@ -36,9 +36,9 @@ namespace AutoServiceBook.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
-            var user = await userManager.FindByEmailAsync(request.Email);
+            AppUser user = await userManager.FindByEmailAsync(request.Email);
 
-            if (user == null)
+            if (user is null)
                 return NotFound("User not found!");
 
             var checkPasswordResult = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);

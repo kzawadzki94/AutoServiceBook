@@ -5,12 +5,12 @@ import AuthenticationService from '../authentication/AuthenticationService';
 
 export default class AccountService {
     constructor(auth) {
-        this.domain = API_CONFIG["URL_BASE"];
         this.auth = auth || new AuthenticationService();
+        this.accountEndpoint = `${API_CONFIG["URL_BASE"]}/account`;
     }
 
     register(firstname, lastname, email, password) {
-        return this.auth.fetch(`${this.domain}/account/register`, {
+        return this.auth.fetch(this.accountEndpoint, {
             method: 'POST',
             body: JSON.stringify({
                 firstname,
@@ -24,7 +24,7 @@ export default class AccountService {
     }
 
     fetchInfo() {
-        this.auth.fetch(`${this.domain}/account`, {
+        this.auth.fetch(this.accountEndpoint, {
             method: 'GET'
         }).then(response => {
             this.saveInfo(response);

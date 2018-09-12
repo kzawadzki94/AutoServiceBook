@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace AutoServiceBook.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class TokenController : Controller
     {
         private readonly IConfiguration configuration;

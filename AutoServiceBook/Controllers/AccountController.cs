@@ -15,6 +15,7 @@ namespace AutoServiceBook.Controllers
 {
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
@@ -38,10 +39,10 @@ namespace AutoServiceBook.Controllers
             return Json(mapper.Map<AppUser, UserInfoResponse>(user));
         }
 
-        //POST: api/Account/Register
+        //POST: api/Account/
         [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterAccountRequest request)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] RegisterAccountRequest request)
         {
             if (ModelState.IsValid)
             {

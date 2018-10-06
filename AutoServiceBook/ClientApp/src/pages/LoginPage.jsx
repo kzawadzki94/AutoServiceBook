@@ -70,7 +70,7 @@ export class LoginPage extends Component {
             })
             .catch(error => {
                 this.setState({
-                    loginError: error.response.statusText
+                    loginError: error
                 });
             });
     }
@@ -83,9 +83,9 @@ function AlertBox(props) {
 
     let message = 'Error';
 
-    if (props.error === 'Not Found') {
+    if (props.error.response.status === 404) {
         message = 'User not found in database.';
-    } else if (props.error === 'Unauthorized') {
+    } else if (props.error.response.status === 401) {
         message = 'Incorrect email or password.';
     }
 

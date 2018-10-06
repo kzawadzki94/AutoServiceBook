@@ -41,7 +41,7 @@ namespace AutoServiceBook
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Car Service Book", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Auto Service Book", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
                 {
@@ -96,7 +96,7 @@ namespace AutoServiceBook
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Service Book API v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auto Service Book API v1"));
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

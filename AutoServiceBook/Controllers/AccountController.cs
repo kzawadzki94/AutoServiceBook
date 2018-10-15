@@ -15,7 +15,7 @@ namespace AutoServiceBook.Controllers
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> userManager;
         private readonly IMapper mapper;
@@ -35,7 +35,7 @@ namespace AutoServiceBook.Controllers
             if (user is null)
                 return NotFound("User not found!");
 
-            return Json(mapper.Map<AppUser, UserInfoResponse>(user));
+            return Ok(mapper.Map<AppUser, UserInfoResponse>(user));
         }
 
         //POST: api/Account/
@@ -49,7 +49,7 @@ namespace AutoServiceBook.Controllers
             var user = mapper.Map<AppUser>(request);
             var createActionResult = await userManager.CreateAsync(user, request.Password);
 
-            return createActionResult.Succeeded ? Ok("User created") : (IActionResult)Json(createActionResult.Errors);
+            return createActionResult.Succeeded ? Ok("User created") : (IActionResult)Ok(createActionResult.Errors.ToList());
         }
     }
 }

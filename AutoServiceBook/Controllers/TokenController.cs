@@ -16,7 +16,7 @@ namespace AutoServiceBook.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : Controller
+    public class TokenController : ControllerBase
     {
         private readonly IConfiguration configuration;
         private readonly UserManager<AppUser> userManager;

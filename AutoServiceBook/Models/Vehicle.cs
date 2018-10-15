@@ -28,6 +28,9 @@ namespace AutoServiceBook.Models
         [Required]
         public int Year { get; set; }
 
+        [Required]
+        public FuelType FuelType { get; set; }
+
         public string Vin { get; set; }
 
         public int EngineDisplacement { get; set; }

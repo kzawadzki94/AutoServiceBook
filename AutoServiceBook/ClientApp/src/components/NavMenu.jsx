@@ -48,6 +48,11 @@ function AuthorizedMenuLinks() {
           <Glyphicon glyph='home' /> Home
       </NavItem>
       </LinkContainer>
+      <LinkContainer to={'/account'}>
+        <NavItem>
+          <Glyphicon glyph='user' /> Account
+      </NavItem>
+      </LinkContainer>
       <LinkContainer to={'/logout'}>
         <NavItem>
           <Glyphicon glyph='log-out' /> Logout

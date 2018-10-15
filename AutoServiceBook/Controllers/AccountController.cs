@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using AutoServiceBook.Models;
 using AutoServiceBook.Models.Requests;
@@ -9,12 +6,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace AutoServiceBook.Controllers
 {
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
@@ -32,28 +32,24 @@ namespace AutoServiceBook.Controllers
         {
             var user = await userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (user == null)
+            if (user is null)
                 return NotFound("User not found!");
 
             return Json(mapper.Map<AppUser, UserInfoResponse>(user));
         }
 
-        //POST: api/Account/Register
+        //POST: api/Account/
         [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterAccountRequest request)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] RegisterAccountRequest request)
         {
-            if (ModelState.IsValid)
-            {
-                var user = mapper.Map<AppUser>(request);
-                var createActionResult = await userManager.CreateAsync(user, request.Password);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
-                if (createActionResult.Succeeded)
-                    return Ok("User created");
-                else
-                    return Json(createActionResult.Errors);
-            }
-            return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
+            var user = mapper.Map<AppUser>(request);
+            var createActionResult = await userManager.CreateAsync(user, request.Password);
+
+            return createActionResult.Succeeded ? Ok("User created") : (IActionResult)Json(createActionResult.Errors);
         }
     }
 }

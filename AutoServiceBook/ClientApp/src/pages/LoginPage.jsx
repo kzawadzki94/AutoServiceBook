@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Well, FormGroup, FormControl, Button, Alert } from 'react-bootstrap';
-import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
+import { Button, Alert } from 'react-bootstrap';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
+import AccountService from '../utils/account/AccountService';
+import { EmailInput } from '../components/forms/EmailInput';
+import { PasswordInput } from '../components/forms/PasswordInput';
+import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
 
 export class LoginPage extends Component {
     constructor() {
         super();
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.validator = new UserCredentialsValidator();
         this.auth = new AuthenticationService();
+        this.account = new AccountService(this.auth);
 
         this.state = {
             buttonDisabled: true,
@@ -21,26 +23,17 @@ export class LoginPage extends Component {
 
     render() {
         return (
-            <div className="center">
-                <Well>
-                    <h1>Login</h1>
+            <div>
+                <h2>Login</h2>
 
-                    <form onSubmit={this.handleSubmit}>
-                        <FormGroup controlId="email" validationState={this.getEmailValidationState()}>
-                            <FormControl type="text" placeholder="E-mail" onChange={this.handleChange} />
-                            <FormControl.Feedback />
-                        </FormGroup>
+                <form onSubmit={this.handleSubmit}>
+                    <EmailInput onChange={this.handleChange} />
+                    <PasswordInput onChange={this.handleChange} />
 
-                        <FormGroup controlId="password">
-                            <FormControl type="password" placeholder="Password" onChange={this.handleChange} />
-                            <FormControl.Feedback />
-                        </FormGroup>
+                    <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Log in</Button>
 
-                        <Button type="submit" disabled={this.state.buttonDisabled}>Log in</Button>
-
-                        <AlertBox error={this.state.loginError}></AlertBox>
-                    </form>
-                </Well>
+                    <AlertBox error={this.state.loginError}></AlertBox>
+                </form>
             </div>
         );
     }
@@ -59,35 +52,25 @@ export class LoginPage extends Component {
         }
     }
 
-    getEmailValidationState() {
-        if (this.state.email === '') {
-            return;
-        }
-
-        if (this.validator.validateEmail(this.state.email)) {
-            return 'success';
-        }
-        return 'error';
-    }
-
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState(
             {
                 [e.target.id]: e.target.value
             }
-        )
+        );
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         this.auth.login(this.state.email, this.state.password)
             .then(response => {
+                this.account.fetchInfo();
                 this.props.history.replace('/');
             })
             .catch(error => {
                 this.setState({
-                    loginError: error.response.statusText
+                    loginError: error
                 });
             });
     }
@@ -100,13 +83,15 @@ function AlertBox(props) {
 
     let message = 'Error';
 
-    if (props.error === 'Not Found') {
+    if (props.error.response.status === 404) {
         message = 'User not found in database.';
-    } else if (props.error === 'Unauthorized') {
+    } else if (props.error.response.status === 401) {
         message = 'Incorrect email or password.';
     }
 
     return (
-        <Alert bsStyle="danger">{message}</Alert>
+        <div className="with-padding-vertical">
+            <Alert bsStyle="danger"><p>{message}</p></Alert>
+        </div>
     );
 }

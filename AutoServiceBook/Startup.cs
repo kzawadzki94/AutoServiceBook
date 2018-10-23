@@ -16,6 +16,7 @@ using AutoServiceBook.Swagger;
 using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using AutoServiceBook.MappingProfiles;
+using AutoServiceBook.Repositories;
 
 namespace AutoServiceBook
 {
@@ -56,6 +57,8 @@ namespace AutoServiceBook
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IRepository<Vehicle>, VehiclesRepository>();
+
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {
                 options.ClaimsIdentity.UserNameClaimType = JwtRegisteredClaimNames.Sub;
@@ -79,7 +82,7 @@ namespace AutoServiceBook
                 };
             });
 
-            services.AddAutoMapper(x => x.AddProfile(new AppUserMappingsProfile()));
+            services.AddAutoMapper(x => x.AddProfile(new ModelMappingsProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

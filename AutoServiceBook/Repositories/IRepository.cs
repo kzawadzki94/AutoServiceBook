@@ -7,11 +7,11 @@ namespace AutoServiceBook.Repositories
     {
         Task AddAsync(T entity);
 
-        Task DeleteAsync(int key);
+        Task DeleteAsync(long key);
 
         IEnumerable<T> GetAll();
 
-        Task<T> GetByIdAsync(int key);
+        Task<T> GetByIdAsync(long key);
 
         Task<bool> UpdateAsync(T entity);
     }

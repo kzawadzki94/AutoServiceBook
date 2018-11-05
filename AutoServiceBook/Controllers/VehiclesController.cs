@@ -26,7 +26,7 @@ namespace AutoServiceBook.Controllers
 
         // DELETE: api/Vehicles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle([FromRoute] int id)
+        public async Task<IActionResult> DeleteVehicle([FromRoute] long id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -43,7 +43,7 @@ namespace AutoServiceBook.Controllers
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehicle([FromRoute] int id)
+        public async Task<IActionResult> GetVehicle([FromRoute] long id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -72,7 +72,7 @@ namespace AutoServiceBook.Controllers
 
             await _repo.AddAsync(vehicle);
 
-            return CreatedAtAction("GetVehicle", new { id = vehicle.CarId }, vehicle);
+            return CreatedAtAction("GetVehicle", new { id = vehicle.VehicleId }, vehicle);
         }
 
         // PUT: api/Vehicles/5
@@ -83,7 +83,7 @@ namespace AutoServiceBook.Controllers
                 return BadRequest(ModelState);
 
             var vehicle = _mapper.Map<Vehicle>(request);
-            vehicle.CarId = id;
+            vehicle.VehicleId = id;
 
             var updateSucceed = await _repo.UpdateAsync(vehicle);
 

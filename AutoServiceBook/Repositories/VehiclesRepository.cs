@@ -22,7 +22,7 @@ namespace AutoServiceBook.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int key)
+        public async Task DeleteAsync(long key)
         {
             var vehicle = await GetByIdAsync(key);
 
@@ -36,7 +36,7 @@ namespace AutoServiceBook.Repositories
         public IEnumerable<Vehicle> GetAll()
             => _context.Vehicles;
 
-        public async Task<Vehicle> GetByIdAsync(int key)
+        public async Task<Vehicle> GetByIdAsync(long key)
         {
             var vehicle = await _context.Vehicles.FindAsync(key);
             return vehicle;
@@ -52,7 +52,7 @@ namespace AutoServiceBook.Repositories
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!vehicleExists(entity.CarId))
+                if (!vehicleExists(entity.VehicleId))
                     return false;
                 else
                     throw;
@@ -60,7 +60,7 @@ namespace AutoServiceBook.Repositories
             return true;
         }
 
-        private bool vehicleExists(int id)
-            => _context.Vehicles.Any(e => e.CarId == id);
+        private bool vehicleExists(long id)
+            => _context.Vehicles.Any(e => e.VehicleId == id);
     }
 }

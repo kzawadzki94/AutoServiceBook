@@ -8,7 +8,7 @@ namespace AutoServiceBook.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CarId { get; set; }
+        public long VehicleId { get; set; }
 
         [Required]
         public string OwnerId { get; set; }

@@ -13,6 +13,8 @@ namespace AutoServiceBook.Repositories
 
         Task<T> GetByIdAsync(long key);
 
+        Task<T> GetByIdWithoutTrackingAsync(long key);
+
         Task<bool> UpdateAsync(T entity);
     }
 }

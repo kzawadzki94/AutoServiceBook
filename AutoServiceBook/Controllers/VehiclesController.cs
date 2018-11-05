@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AutoServiceBook.Controllers
@@ -36,6 +37,9 @@ namespace AutoServiceBook.Controllers
             if (vehicle is null)
                 return NotFound();
 
+            if (!doesUserOwnVehicle(vehicle.OwnerId))
+                return Unauthorized();
+
             await _repo.DeleteAsync(id);
 
             return Ok(vehicle);
@@ -53,13 +57,16 @@ namespace AutoServiceBook.Controllers
             if (vehicle is null)
                 return NotFound();
 
+            if (!doesUserOwnVehicle(vehicle.OwnerId))
+                return Unauthorized();
+
             return Ok(vehicle);
         }
 
         // GET: api/Vehicles
         [HttpGet]
         public IEnumerable<Vehicle> GetVehicles()
-            => _repo.GetAll();
+            => _repo.GetAll().Where(v => doesUserOwnVehicle(v.OwnerId));
 
         // POST: api/Vehicles
         [HttpPost]
@@ -67,6 +74,9 @@ namespace AutoServiceBook.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (!doesUserOwnVehicle(request.OwnerId))
+                return Unauthorized();
 
             var vehicle = _mapper.Map<Vehicle>(request);
 
@@ -83,7 +93,14 @@ namespace AutoServiceBook.Controllers
                 return BadRequest(ModelState);
 
             var vehicle = _mapper.Map<Vehicle>(request);
+
+            var currentVehicle = await _repo.GetByIdWithoutTrackingAsync(id);
+
+            if (!doesUserOwnVehicle(currentVehicle.OwnerId))
+                return Unauthorized();
+
             vehicle.VehicleId = id;
+            vehicle.OwnerId = currentVehicle.OwnerId;
 
             var updateSucceed = await _repo.UpdateAsync(vehicle);
 
@@ -92,5 +109,8 @@ namespace AutoServiceBook.Controllers
 
             return NoContent();
         }
+
+        private bool doesUserOwnVehicle(string userId)
+            => HttpContext.User.FindFirst("user_id").Value == userId;
     }
 }

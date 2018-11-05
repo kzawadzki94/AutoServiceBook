@@ -42,6 +42,13 @@ namespace AutoServiceBook.Repositories
             return vehicle;
         }
 
+        public async Task<Vehicle> GetByIdWithoutTrackingAsync(long key)
+        {
+            var vehicles = await _context.Vehicles.AsNoTracking().ToListAsync();
+            var vehicle = vehicles.Find(v => v.VehicleId == key);
+            return vehicle;
+        }
+
         public async Task<bool> UpdateAsync(Vehicle entity)
         {
             _context.Entry(entity).State = EntityState.Modified;

@@ -65,7 +65,6 @@ export class LoginPage extends Component {
 
         this.auth.login(this.state.email, this.state.password)
             .then(response => {
-                this.account.fetchInfo();
                 this.props.history.replace('/');
             })
             .catch(error => {

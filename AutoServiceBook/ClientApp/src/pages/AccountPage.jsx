@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-import AccountService from '../utils/account/AccountService';
+import AuthenticationService from '../utils/authentication/AuthenticationService'
 
 export class AccountPage extends Component {
     constructor() {
         super();
-        this.account = new AccountService();
+        this.auth = new AuthenticationService();
         this.state = {
-            user: this.account.getInfo()
+            user: this.auth.getProfile()
         };
     }
 
@@ -19,15 +19,15 @@ export class AccountPage extends Component {
                     <tbody>
                         <tr>
                             <th>First Name:</th>
-                            <td>{this.state.user.firstName}</td>
+                            <td>{this.state.user.given_name}</td>
                         </tr>
                         <tr>
                             <th>Last Name: </th>
-                            <td>{this.state.user.lastName}</td>
+                            <td>{this.state.user.family_name}</td>
                         </tr>
                         <tr>
                             <th>Email: </th>
-                            <td>{this.state.user.email}</td>
+                            <td>{this.state.user.sub}</td>
                         </tr>
                     </tbody>
                 </Table>

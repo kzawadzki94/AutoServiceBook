@@ -24,7 +24,7 @@ export default class AccountService {
     }
 
     fetchInfo() {
-        this.auth.fetch(this.accountEndpoint, {
+        return this.auth.fetch(this.accountEndpoint, {
             method: 'GET'
         }).then(response => {
             return Promise.resolve(response);

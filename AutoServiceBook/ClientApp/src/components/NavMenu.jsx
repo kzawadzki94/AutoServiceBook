@@ -53,6 +53,11 @@ function AuthorizedMenuLinks() {
           <Glyphicon glyph='user' /> Account
       </NavItem>
       </LinkContainer>
+      <LinkContainer to={'/vehicles'}>
+        <NavItem>
+          <Glyphicon glyph='road' /> Vehicles
+      </NavItem>
+      </LinkContainer>
       <LinkContainer to={'/logout'}>
         <NavItem>
           <Glyphicon glyph='log-out' /> Logout

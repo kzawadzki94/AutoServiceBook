@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Table, Glyphicon, Well } from 'react-bootstrap';
+import { VehicleDetails } from '../components/';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
-
 
 export class VehiclesPage extends Component {
     constructor() {
@@ -13,7 +13,9 @@ export class VehiclesPage extends Component {
 
         this.state = {
             vehicles: [],
-            isLoading: true
+            isLoading: true,
+            selectedVehicle: null,
+            showDetails: false
         }
     }
 
@@ -32,9 +34,9 @@ export class VehiclesPage extends Component {
                 <td>{v.make}</td>
                 <td>{v.model}</td>
                 <td>{v.year}</td>
-                <td><Button bsStyle="info" bsSize="xsmall">Details</Button></td>
-                <td><Button bsStyle="warning" bsSize="xsmall">Edit</Button></td>
-                <td><Button bsStyle="danger" bsSize="xsmall">Delete</Button></td>
+                <td><Button bsStyle="info" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Details</Button></td>
+                <td><Button bsStyle="warning" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Edit</Button></td>
+                <td><Button bsStyle="danger" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Delete</Button></td>
             </tr>
         );
 
@@ -63,6 +65,9 @@ export class VehiclesPage extends Component {
                         {vehiclesList}
                     </tbody>
                 </Table>
+
+                <br />
+                <VehicleDetails show={this.state.showDetails} vehicle={this.state.selectedVehicle} />
             </div>
         );
     }
@@ -75,5 +80,29 @@ export class VehiclesPage extends Component {
                     isLoading: false
                 });
             });
+    }
+
+    handleButtonClick = (e) => {
+        let selectedVehicleId = e.target.value;
+        let selectedAction = e.target.innerHTML;
+
+        let selectedVehicle = this.state.vehicles.find(v => v.vehicleId == selectedVehicleId);
+
+        if (selectedAction === "Details") {
+            this.setState({
+                showDetails: true,
+                selectedVehicle: selectedVehicle
+            });
+        } else if (selectedAction === "Edit") {
+            this.setState({
+                showDetails: false,
+                selectedVehicle: selectedVehicle
+            });
+        } else if (selectedAction === "Delete") {
+            this.setState({
+                showDetails: false,
+                selectedVehicle: selectedVehicle
+            });
+        }
     }
 }

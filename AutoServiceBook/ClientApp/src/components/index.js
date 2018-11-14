@@ -16,6 +16,9 @@ import {
 import {
     LastNameInput
 } from './forms/LastNameInput';
+import {
+    VehicleDetails
+} from './VehicleDetails'
 
 export {
     Layout,
@@ -23,5 +26,6 @@ export {
     EmailInput,
     PasswordInput,
     FirstNameInput,
-    LastNameInput
+    LastNameInput,
+    VehicleDetails
 }

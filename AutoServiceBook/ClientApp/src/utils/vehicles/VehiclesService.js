@@ -17,4 +17,13 @@ export default class VehiclesService {
             return Promise.resolve(response);
         });
     }
+
+    deleteVehicle(id) {
+        return this.auth.fetch(this.vehiclesEndpoint + '/' + id, {
+            method: 'DELETE'
+        }).then(response => {
+            console.log(response);
+            return Promise.resolve(response);
+        });
+    }
 }

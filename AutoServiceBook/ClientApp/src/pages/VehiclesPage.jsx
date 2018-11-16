@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Table, Glyphicon, Well } from 'react-bootstrap';
+import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel } from 'react-bootstrap';
 import { VehicleDetails } from '../components/';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export class VehiclesPage extends Component {
     constructor() {
@@ -15,7 +17,6 @@ export class VehiclesPage extends Component {
             vehicles: [],
             isLoading: true,
             selectedVehicle: null,
-            showDetails: false
         }
     }
 
@@ -29,15 +30,22 @@ export class VehiclesPage extends Component {
         }
 
         const vehiclesList = this.state.vehicles.map((v, i) =>
-            <tr key={i}>
-                <td>{v.licencePlate}</td>
-                <td>{v.make}</td>
-                <td>{v.model}</td>
-                <td>{v.year}</td>
-                <td><Button bsStyle="info" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Details</Button></td>
-                <td><Button bsStyle="warning" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Edit</Button></td>
-                <td><Button bsStyle="danger" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Delete</Button></td>
-            </tr>
+            <Panel eventKey={i} key={i}>
+                <Panel.Heading>
+                    <Panel.Title toggle>{v.make} {v.model} {v.licencePlate}</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body collapsible>
+                    <VehicleDetails vehicle={v} />
+                </Panel.Body>
+                <Panel.Footer>
+                    <ButtonToolbar>
+                        <ButtonGroup>
+                            <Button bsStyle="warning" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Edit</Button>
+                            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Delete</Button>
+                        </ButtonGroup>
+                    </ButtonToolbar>
+                </Panel.Footer>
+            </Panel>
         );
 
         return (
@@ -48,26 +56,9 @@ export class VehiclesPage extends Component {
                     <Button bsStyle="primary"><Glyphicon glyph="plus" /> Add new vehicle</Button>
                 </Well>
 
-                <Table responsive striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Licence plate</th>
-                            <th>Make</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {vehiclesList}
-                    </tbody>
-                </Table>
-
-                <br />
-                <VehicleDetails show={this.state.showDetails} vehicle={this.state.selectedVehicle} />
+                <PanelGroup accordion id="vehicles-panel">
+                    {vehiclesList}
+                </PanelGroup>
             </div>
         );
     }
@@ -82,27 +73,40 @@ export class VehiclesPage extends Component {
             });
     }
 
+    deleteVehicle = (vehicle) => {
+        confirmAlert({
+            title: 'Confirm vehicle delete',
+            message: 'Are you sure to delete ' + vehicle.make + ' ' + vehicle.model + '?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => this.vehiclesService.deleteVehicle(vehicle.vehicleId)
+                },
+                {
+                    label: 'No',
+                }
+            ],
+            willUnmount: () => {
+                this.fetchVehicles();
+                this.forceUpdate();
+            }
+        });
+    }
+
     handleButtonClick = (e) => {
         let selectedVehicleId = e.target.value;
         let selectedAction = e.target.innerHTML;
 
-        let selectedVehicle = this.state.vehicles.find(v => v.vehicleId == selectedVehicleId);
+        let selectedVehicle = this.state.vehicles.find(v => v.vehicleId === parseInt(selectedVehicleId));
 
-        if (selectedAction === "Details") {
-            this.setState({
-                showDetails: true,
-                selectedVehicle: selectedVehicle
-            });
-        } else if (selectedAction === "Edit") {
-            this.setState({
-                showDetails: false,
-                selectedVehicle: selectedVehicle
-            });
+        this.setState({
+            selectedVehicle: selectedVehicle
+        });
+
+        if (selectedAction === "Edit") {
+
         } else if (selectedAction === "Delete") {
-            this.setState({
-                showDetails: false,
-                selectedVehicle: selectedVehicle
-            });
+            this.deleteVehicle(selectedVehicle);
         }
     }
 }

@@ -15,9 +15,9 @@ export default class VehicleFormatter {
             engineDisplacement: this.formatEmptyOrNull(vehicle.engineDisplacement) + " cm3",
             engineHorsepower: this.formatEmptyOrNull(vehicle.engineHorsepower) + " HP",
             mileage: this.formatEmptyOrNull(vehicle.mileage) + " km",
-            registerDate: this.formatDate(vehicle.registerDate),
-            insuranceExpireDate: this.formatDate(vehicle.insuranceExpireDate),
-            nextServiceDate: this.formatDate(vehicle.nextServiceDate),
+            registerDate: this.formatDate(vehicle.registerDate) + " (" + this.formatRelativeDate(vehicle.registerDate) + ")",
+            insuranceExpireDate: this.formatDate(vehicle.insuranceExpireDate) + " (" + this.formatRelativeDate(vehicle.insuranceExpireDate) + ")",
+            nextServiceDate: this.formatDate(vehicle.nextServiceDate) + " (" + this.formatRelativeDate(vehicle.nextServiceDate) + ")",
             insuranceNumber: this.formatEmptyOrNull(vehicle.insuranceNumber)
         }
     }
@@ -71,5 +71,13 @@ export default class VehicleFormatter {
             return "N/A";
         }
         return moment(d).format("DD MMMM YYYY");
+    }
+
+    formatRelativeDate(d) {
+        if (d === undefined || d === null || d === "" || d === "string") {
+            return "N/A";
+        }
+
+        return moment(d).fromNow();
     }
 }

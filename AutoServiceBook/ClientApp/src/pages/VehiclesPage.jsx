@@ -24,6 +24,12 @@ export class VehiclesPage extends Component {
         this.fetchVehicles();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.isLoading !== this.state.isLoading) {
+            this.fetchVehicles();
+        }
+    }
+
     render() {
         if (this.state.isLoading) {
             return (<p>Loading...</p>);
@@ -87,8 +93,9 @@ export class VehiclesPage extends Component {
                 }
             ],
             willUnmount: () => {
-                this.fetchVehicles();
-                this.forceUpdate();
+                this.setState({
+                    isLoading: true
+                });
             }
         });
     }

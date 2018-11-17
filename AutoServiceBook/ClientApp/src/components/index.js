@@ -17,8 +17,14 @@ import {
     LastNameInput
 } from './forms/LastNameInput';
 import {
+    SelectInput
+} from './forms/SelectInput';
+import {
     VehicleDetails
-} from './VehicleDetails'
+} from './VehicleDetails';
+import {
+    VehiclesForm
+} from './VehiclesForm';
 
 export {
     Layout,
@@ -27,5 +33,7 @@ export {
     PasswordInput,
     FirstNameInput,
     LastNameInput,
-    VehicleDetails
+    SelectInput,
+    VehicleDetails,
+    VehiclesForm
 }

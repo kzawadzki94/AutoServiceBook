@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel } from 'react-bootstrap';
-import { VehicleDetails } from '../components/';
+import { VehicleDetails, VehiclesForm } from '../components/';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
 import { confirmAlert } from 'react-confirm-alert';
@@ -17,6 +17,7 @@ export class VehiclesPage extends Component {
             vehicles: [],
             isLoading: true,
             selectedVehicle: null,
+            showForm: false
         }
     }
 
@@ -59,7 +60,10 @@ export class VehiclesPage extends Component {
                 <h2>Vehicles</h2>
 
                 <Well>
-                    <Button bsStyle="primary"><Glyphicon glyph="plus" /> Add new vehicle</Button>
+                    <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick}></AddButton>
+                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} vehicle={this.state.selectedVehicle}>
+                        <Button bsStyle="danger" onClick={this.handleButtonClick}>Close</Button>
+                    </VehiclesForm>
                 </Well>
 
                 <PanelGroup accordion id="vehicles-panel">
@@ -102,18 +106,41 @@ export class VehiclesPage extends Component {
 
     handleButtonClick = (e) => {
         let selectedVehicleId = e.target.value;
-        let selectedAction = e.target.innerHTML;
+        let selectedAction = e.target.innerHTML.replace(/<(?:.|\n)*?>/gm, '').trim();
 
         let selectedVehicle = this.state.vehicles.find(v => v.vehicleId === parseInt(selectedVehicleId));
 
         this.setState({
-            selectedVehicle: selectedVehicle
+            selectedVehicle,
         });
 
-        if (selectedAction === "Edit") {
-
-        } else if (selectedAction === "Delete") {
-            this.deleteVehicle(selectedVehicle);
+        switch (selectedAction) {
+            case "Edit":
+                this.setState({
+                    showForm: true,
+                });
+                break;
+            case "Delete":
+                this.deleteVehicle(selectedVehicle);
+                break;
+            case "Add":
+                this.setState({
+                    showForm: true,
+                    selectedVehicle: null
+                });
+                break;
+            case "Close":
+                this.setState({
+                    showForm: false
+                });
         }
+    }
+}
+
+function AddButton(props) {
+    if (!props.showForm) {
+        return (<Button bsStyle="primary" onClick={props.onClick}><Glyphicon glyph="plus" /> Add</Button>);
+    } else {
+        return null;
     }
 }

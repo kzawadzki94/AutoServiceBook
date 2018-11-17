@@ -1,95 +1,83 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import VehicleFormatter from '../utils/vehicles/VehicleFormatter';
 
 export class VehicleDetails extends Component {
-    render() {
-        const vehicleType = (type) => {
-            if (type === 0) {
-                return "Car";
-            } else if (type === 1) {
-                return "Truck";
-            } else if (type === 2) {
-                return "Motorcycle";
-            } else if (type === 3) {
-                return "Other";
-            } else {
-                return "N/A";
-            }
-        };
+    constructor(props) {
+        super(props);
+        this.vehicleFormatter = new VehicleFormatter();
 
-        const fuelType = (type) => {
-            if (type === 0) {
-                return "Petrol";
-            } else if (type === 1) {
-                return "LPG";
-            } else if (type === 2) {
-                return "CNG";
-            } else if (type === 3) {
-                return "Diesel";
-            } else if (type === 4) {
-                return "Hybrid";
-            } else if (type === 5) {
-                return "Electric";
-            } else if (type === 6) {
-                return "Hydrogen";
-            } else {
-                return "N/A";
-            }
+        this.state = {
+            vehicle: null,
+            isLoading: true
         };
+    }
+
+    componentDidMount() {
+        this.setState({
+            isLoading: false,
+            vehicle: this.vehicleFormatter.getFormattedVehicle(this.props.vehicle)
+        });
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (<p>Loading...</p>);
+        }
 
         return (
             <React.Fragment>
                 <Row>
                     <Col sm={6}><b>Vehicle Type</b></Col>
-                    <Col sm={6}>{vehicleType(this.props.vehicle.type)}</Col>
+                    <Col sm={6}>{this.state.vehicle.type}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Make</b></Col>
-                    <Col sm={6}>{this.props.vehicle.make}</Col>
+                    <Col sm={6}>{this.state.vehicle.make}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Model</b></Col>
-                    <Col sm={6}>{this.props.vehicle.model}</Col>
+                    <Col sm={6}>{this.state.vehicle.model}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Year</b></Col>
-                    <Col sm={6}>{this.props.vehicle.year}</Col>
+                    <Col sm={6}>{this.state.vehicle.year}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Licence Plate</b></Col>
-                    <Col sm={6}>{this.props.vehicle.licencePlate}</Col>
+                    <Col sm={6}>{this.state.vehicle.licencePlate}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Odometer - kilometers</b></Col>
-                    <Col sm={6}>{this.props.vehicle.mileage} km</Col>
+                    <Col sm={6}>{this.state.vehicle.mileage}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Engine Displacement</b></Col>
-                    <Col sm={6}>{this.props.vehicle.engineDisplacement} cm3</Col>
+                    <Col sm={6}>{this.state.vehicle.engineDisplacement}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Fuel Type</b></Col>
-                    <Col sm={6}>{fuelType(this.props.vehicle.fuelType)}</Col>
+                    <Col sm={6}>{this.state.vehicle.fuelType}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>VIN</b></Col>
-                    <Col sm={6}>{this.props.vehicle.vin}</Col>
+                    <Col sm={6}>{this.state.vehicle.vin}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Register date</b></Col>
-                    <Col sm={6}>{this.props.vehicle.registerDate}</Col>
+                    <Col sm={6}>{this.state.vehicle.registerDate}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Next service date</b></Col>
-                    <Col sm={6}>{this.props.vehicle.nextServiceDate}</Col>
+                    <Col sm={6}>{this.state.vehicle.nextServiceDate}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Insurance number</b></Col>
-                    <Col sm={6}>{this.props.vehicle.insuranceNumber}</Col>
+                    <Col sm={6}>{this.state.vehicle.insuranceNumber}</Col>
                 </Row>
                 <Row>
                     <Col sm={6}><b>Insurance expire date</b></Col>
-                    <Col sm={6}>{this.props.vehicle.insuranceExpireDate}</Col>
+                    <Col sm={6}>{this.state.vehicle.insuranceExpireDate}</Col>
                 </Row>
             </React.Fragment>
         );

@@ -35,6 +35,8 @@ namespace AutoServiceBook.Models
 
         public int EngineDisplacement { get; set; }
 
+        public int EngineHorsepower { get; set; }
+
         public long Mileage { get; set; }
 
         [DataType(DataType.Date)]

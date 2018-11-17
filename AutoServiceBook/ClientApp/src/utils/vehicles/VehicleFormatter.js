@@ -13,6 +13,7 @@ export default class VehicleFormatter {
             fuelType: this.formatFuelType(vehicle.fuelType),
             vin: this.formatEmptyOrNull(vehicle.vin),
             engineDisplacement: this.formatEmptyOrNull(vehicle.engineDisplacement) + " cm3",
+            engineHorsepower: this.formatEmptyOrNull(vehicle.engineHorsepower) + " HP",
             mileage: this.formatEmptyOrNull(vehicle.mileage) + " km",
             registerDate: this.formatDate(vehicle.registerDate),
             insuranceExpireDate: this.formatDate(vehicle.insuranceExpireDate),
@@ -58,7 +59,7 @@ export default class VehicleFormatter {
     }
 
     formatEmptyOrNull(s) {
-        if (s === undefined || s === null || s === "string" || s === "") {
+        if (s === undefined || s === null || s === "string" || s === "" || s === 0 || s === "0") {
             return "N/A";
         } else {
             return s;

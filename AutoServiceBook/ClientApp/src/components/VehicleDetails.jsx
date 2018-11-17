@@ -56,6 +56,10 @@ export class VehicleDetails extends Component {
                     <Col sm={6}>{this.state.vehicle.engineDisplacement}</Col>
                 </Row>
                 <Row>
+                    <Col sm={6}><b>Engine Horsepower</b></Col>
+                    <Col sm={6}>{this.state.vehicle.engineHorsepower}</Col>
+                </Row>
+                <Row>
                     <Col sm={6}><b>Fuel Type</b></Col>
                     <Col sm={6}>{this.state.vehicle.fuelType}</Col>
                 </Row>

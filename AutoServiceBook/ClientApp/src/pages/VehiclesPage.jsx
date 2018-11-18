@@ -122,6 +122,10 @@ export class VehiclesPage extends Component {
                 break;
             case "Delete":
                 this.deleteVehicle(selectedVehicle);
+                this.setState({
+                    showForm: false,
+                    selectedVehicle: null
+                });
                 break;
             case "Add":
                 this.setState({

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel } from 'react-bootstrap';
-import { SelectInput, TextInput, NumericInput } from '../components';
+import { Button } from 'react-bootstrap';
+import { SelectInput, TextInput, NumericInput, DateInput } from '../components';
 
 export class VehiclesForm extends Component {
     constructor(props) {
@@ -62,10 +62,10 @@ export class VehiclesForm extends Component {
                     <NumericInput controlId="engineHorsepower" label="Engine horsepower" onChange={this.handleChange} value={this.state.vehicle.engineHorsepower}></NumericInput>
                     <SelectInput controlId="fuelType" label="Fuel Type" options={fuelOptions} onChange={this.handleChange} selected={this.state.vehicle.fuelType}></SelectInput>
                     <TextInput controlId="vin" label="VIN number" onChange={this.handleChange} value={this.state.vehicle.vin}></TextInput>
-                    //register date
-                    //next service date
+                    <DateInput controlId="registerDate" label="Register date" onChange={this.handleChange} value={this.state.vehicle.registerDate}></DateInput>
+                    <DateInput controlId="nextServiceDate" label="Next service date" onChange={this.handleChange} value={this.state.vehicle.nextServiceDate}></DateInput>
                     <TextInput controlId="insuranceNumber" label="Insurance number" onChange={this.handleChange} value={this.state.vehicle.insuranceNumber}></TextInput>
-                //insuranceExpireDate
+                    <DateInput controlId="insuranceExpireDate" label="Insurance expire date" onChange={this.handleChange} value={this.state.vehicle.insuranceExpireDate}></DateInput>
                 </form>
                 <Button type="submit" bsStyle="primary">{this.state.buttonText}</Button>
                 {this.props.children}

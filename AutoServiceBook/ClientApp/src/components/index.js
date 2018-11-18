@@ -26,6 +26,9 @@ import {
     NumericInput
 } from './forms/NumericInput';
 import {
+    DateInput
+} from './forms/DateInput';
+import {
     VehicleDetails
 } from './VehicleDetails';
 import {
@@ -42,6 +45,7 @@ export {
     SelectInput,
     TextInput,
     NumericInput,
+    DateInput,
     VehicleDetails,
     VehiclesForm
 }

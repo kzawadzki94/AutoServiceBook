@@ -62,7 +62,7 @@ export class VehiclesPage extends Component {
                 <Well>
                     <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick}></AddButton>
                     <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} vehicle={this.state.selectedVehicle}>
-                        <Button bsStyle="danger" onClick={this.handleButtonClick}>Close</Button>
+                        <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
                     </VehiclesForm>
                 </Well>
 
@@ -129,7 +129,7 @@ export class VehiclesPage extends Component {
                     selectedVehicle: null
                 });
                 break;
-            case "Close":
+            case "Cancel":
                 this.setState({
                     showForm: false
                 });

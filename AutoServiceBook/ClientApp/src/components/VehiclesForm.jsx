@@ -1,42 +1,27 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel } from 'react-bootstrap';
-import { SelectInput } from '../components';
+import { SelectInput, TextInput, NumericInput } from '../components';
 
 export class VehiclesForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            vehicle: this.getEmptyVehicleState()
+            vehicle: this.getEmptyVehicleState(),
+            buttonText: "Add"
         }
     }
-
-    // type: this.formatVehicleType(vehicle.type), //select box
-
-    // licencePlate: vehicle.licencePlate, // text input
-    // make: vehicle.make, // text input
-    // model: vehicle.model, // text input
-    // year: vehicle.year, // // text input - numeric only
-
-    // fuelType: this.formatFuelType(vehicle.fuelType), //select box
-
-    // vin: this.formatEmptyOrNull(vehicle.vin), // text input
-    // engineDisplacement: this.formatEmptyOrNull(vehicle.engineDisplacement) + " cm3", // text input - numeric only
-    // engineHorsepower: this.formatEmptyOrNull(vehicle.engineHorsepower) + " HP", // text input - numeric only
-    // mileage: this.formatEmptyOrNull(vehicle.mileage) + " km", // text input - numeric only
-    // registerDate: this.formatDate(vehicle.registerDate) + " (" + this.formatRelativeDate(vehicle.registerDate) + ")", //date input
-    // insuranceExpireDate: this.formatDate(vehicle.insuranceExpireDate) + " (" + this.formatRelativeDate(vehicle.insuranceExpireDate) + ")", //date input
-    // nextServiceDate: this.formatDate(vehicle.nextServiceDate) + " (" + this.formatRelativeDate(vehicle.nextServiceDate) + ")", //date input
-    // insuranceNumber: this.formatEmptyOrNull(vehicle.insuranceNumber) // text input
 
     componentDidUpdate(prevProps) {
         if (this.props.vehicle && this.props != prevProps) {
             this.setState({
-                vehicle: this.props.vehicle
+                vehicle: this.props.vehicle,
+                buttonText: "Update"
             });
         } else if (!this.props.show && this.props !== prevProps) {
             this.setState({
-                vehicle: this.getEmptyVehicleState()
+                vehicle: this.getEmptyVehicleState(),
+                buttonText: "Add"
             });
         }
     }
@@ -65,10 +50,24 @@ export class VehiclesForm extends Component {
 
         return (
             <React.Fragment>
+                <h2>{this.state.buttonText} vehicle</h2>
                 <form>
                     <SelectInput controlId="type" label="Vehicle Type" options={typeOptions} onChange={this.handleChange} selected={this.state.vehicle.type}></SelectInput>
+                    <TextInput controlId="make" label="Make" onChange={this.handleChange} value={this.state.vehicle.make} required minLength="1"></TextInput>
+                    <TextInput controlId="model" label="Model" onChange={this.handleChange} value={this.state.vehicle.model} required minLength="1"></TextInput>
+                    <NumericInput controlId="year" label="Year" onChange={this.handleChange} value={this.state.vehicle.year} required minLength="3"></NumericInput>
+                    <TextInput controlId="licencePlate" label="Licence Plate" onChange={this.handleChange} value={this.state.vehicle.licencePlate} required minLength="1"></TextInput>
+                    <NumericInput controlId="mileage" label="Odometer - kilometers" onChange={this.handleChange} value={this.state.vehicle.mileage}></NumericInput>
+                    <NumericInput controlId="engineDisplacement" label="Engine displacement" onChange={this.handleChange} value={this.state.vehicle.engineDisplacement}></NumericInput>
+                    <NumericInput controlId="engineHorsepower" label="Engine horsepower" onChange={this.handleChange} value={this.state.vehicle.engineHorsepower}></NumericInput>
                     <SelectInput controlId="fuelType" label="Fuel Type" options={fuelOptions} onChange={this.handleChange} selected={this.state.vehicle.fuelType}></SelectInput>
+                    <TextInput controlId="vin" label="VIN number" onChange={this.handleChange} value={this.state.vehicle.vin}></TextInput>
+                    //register date
+                    //next service date
+                    <TextInput controlId="insuranceNumber" label="Insurance number" onChange={this.handleChange} value={this.state.vehicle.insuranceNumber}></TextInput>
+                //insuranceExpireDate
                 </form>
+                <Button type="submit" bsStyle="primary">{this.state.buttonText}</Button>
                 {this.props.children}
             </React.Fragment>
         )
@@ -85,8 +84,20 @@ export class VehiclesForm extends Component {
 
     getEmptyVehicleState = () => {
         return {
-            type: "0",
-            fuelType: "0"
+            type: "",
+            licencePlate: "",
+            make: "",
+            model: "",
+            year: "",
+            fuelType: "0",
+            vin: "",
+            engineDisplacement: "",
+            engineHorsepower: "",
+            mileage: "",
+            registerDate: "",
+            insuranceExpireDate: "",
+            nextServiceDate: "",
+            insuranceNumber: ""
         }
     }
 }

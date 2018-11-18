@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 
 export class SelectInput extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
 
         const selectOptions = this.props.options.map((v, i) =>

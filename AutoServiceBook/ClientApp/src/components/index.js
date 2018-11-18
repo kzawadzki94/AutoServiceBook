@@ -20,6 +20,12 @@ import {
     SelectInput
 } from './forms/SelectInput';
 import {
+    TextInput
+} from './forms/TextInput';
+import {
+    NumericInput
+} from './forms/NumericInput';
+import {
     VehicleDetails
 } from './VehicleDetails';
 import {
@@ -34,6 +40,8 @@ export {
     FirstNameInput,
     LastNameInput,
     SelectInput,
+    TextInput,
+    NumericInput,
     VehicleDetails,
     VehiclesForm
 }

@@ -90,7 +90,14 @@ export class VehiclesPage extends Component {
             buttons: [
                 {
                     label: 'Yes',
-                    onClick: () => this.vehiclesService.deleteVehicle(vehicle.vehicleId)
+                    onClick: () => {
+                        this.vehiclesService.deleteVehicle(vehicle.vehicleId).then(() => {
+                            this.setState({
+                                showForm: false,
+                                selectedVehicle: null
+                            });
+                        })
+                    }
                 },
                 {
                     label: 'No',
@@ -122,10 +129,6 @@ export class VehiclesPage extends Component {
                 break;
             case "Delete":
                 this.deleteVehicle(selectedVehicle);
-                this.setState({
-                    showForm: false,
-                    selectedVehicle: null
-                });
                 break;
             case "Add":
                 this.setState({

@@ -72,8 +72,8 @@ namespace AutoServiceBook.Controllers
         [HttpPost]
         public async Task<IActionResult> PostVehicle([FromBody] VehicleAddOrChangeRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid || !TryValidateModel(request))
+                return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
             if (!doesUserOwnVehicle(request.OwnerId))
                 return Unauthorized();
@@ -89,12 +89,15 @@ namespace AutoServiceBook.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehicle([FromRoute] int id, [FromBody] VehicleAddOrChangeRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid || !TryValidateModel(request))
+                return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
             var vehicle = _mapper.Map<Vehicle>(request);
 
             var currentVehicle = await _repo.GetByIdWithoutTrackingAsync(id);
+
+            if (currentVehicle is null)
+                return NotFound();
 
             if (!doesUserOwnVehicle(currentVehicle.OwnerId))
                 return Unauthorized();
@@ -107,7 +110,7 @@ namespace AutoServiceBook.Controllers
             if (!updateSucceed)
                 return NotFound();
 
-            return NoContent();
+            return Ok(vehicle);
         }
 
         private bool doesUserOwnVehicle(string userId)

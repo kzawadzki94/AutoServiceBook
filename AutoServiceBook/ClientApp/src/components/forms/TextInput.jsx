@@ -37,14 +37,14 @@ export class TextInput extends Component {
         this.props.onChange(e);
         this.setState(
             {
-                [e.target.id]: e.target.value.toString()
+                text: e.target.value.toString()
             }
         );
     }
 
     validationState = () => {
         if (this.props.required) {
-            if (this.state.text && this.state.text.length > this.state.minLength) {
+            if (this.state.text && this.state.text.length >= this.state.minLength) {
                 return 'success';
             }
             return 'error';

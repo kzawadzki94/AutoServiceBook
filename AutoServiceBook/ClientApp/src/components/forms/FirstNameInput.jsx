@@ -26,7 +26,7 @@ export class FirstNameInput extends Component {
         this.props.onChange(e);
         this.setState(
             {
-                [e.target.id]: e.target.value
+                firstname: e.target.value
             }
         );
     }

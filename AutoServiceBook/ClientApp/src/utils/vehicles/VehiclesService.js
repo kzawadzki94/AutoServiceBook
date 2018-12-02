@@ -25,4 +25,25 @@ export default class VehiclesService {
             return Promise.resolve(response);
         });
     }
+
+    editVehicle(vehicle) {
+        return this.auth.fetch(this.vehiclesEndpoint + '/' + vehicle.vehicleId, {
+            method: 'PUT',
+            body: JSON.stringify(vehicle)
+        }).then(response => {
+            return Promise.resolve(response);
+        });
+    }
+
+    addVehicle(vehicle) {
+        let v = Object.assign({}, vehicle);
+        v.ownerId = this.user_id;
+        return this.auth.fetch(this.vehiclesEndpoint, {
+            method: 'POST',
+            body: JSON.stringify(v)
+        }).then(response => {
+            return Promise.resolve(response);
+        });
+    }
+
 }

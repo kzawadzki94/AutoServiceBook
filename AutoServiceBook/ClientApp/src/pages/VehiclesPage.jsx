@@ -5,6 +5,8 @@ import AuthenticationService from '../utils/authentication/AuthenticationService
 import VehiclesService from '../utils/vehicles/VehiclesService';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import toastr from 'toastr';
+import 'toastr/build/toastr.css'
 
 export class VehiclesPage extends Component {
     constructor() {
@@ -61,7 +63,7 @@ export class VehiclesPage extends Component {
 
                 <Well>
                     <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick}></AddButton>
-                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} vehicle={this.state.selectedVehicle}>
+                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} onSubmit={this.handleSubmit}>
                         <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
                     </VehiclesForm>
                 </Well>
@@ -96,6 +98,7 @@ export class VehiclesPage extends Component {
                                 showForm: false,
                                 selectedVehicle: null
                             });
+                            toastr.success("Vehicle deleted!");
                         })
                     }
                 },
@@ -105,7 +108,8 @@ export class VehiclesPage extends Component {
             ],
             willUnmount: () => {
                 this.setState({
-                    isLoading: true
+                    isLoading: true,
+                    selectedVehicle: null
                 });
             }
         });
@@ -126,6 +130,7 @@ export class VehiclesPage extends Component {
                 this.setState({
                     showForm: true,
                 });
+                window.scrollTo(0, 0);
                 break;
             case "Delete":
                 this.deleteVehicle(selectedVehicle);
@@ -138,9 +143,17 @@ export class VehiclesPage extends Component {
                 break;
             case "Cancel":
                 this.setState({
-                    showForm: false
+                    showForm: false,
+                    selectedVehicle: null
                 });
         }
+    }
+
+    handleSubmit = () => {
+        this.setState({
+            isLoading: true,
+            showForm: false,
+        });
     }
 }
 

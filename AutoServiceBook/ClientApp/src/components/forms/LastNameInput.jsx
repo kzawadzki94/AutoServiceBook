@@ -26,7 +26,7 @@ export class LastNameInput extends Component {
         this.props.onChange(e);
         this.setState(
             {
-                [e.target.id]: e.target.value
+                lastname: e.target.value
             }
         );
     }

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AutoServiceBook.Models
 {
@@ -6,5 +8,6 @@ namespace AutoServiceBook.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; }
     }
 }

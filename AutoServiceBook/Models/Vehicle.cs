@@ -11,7 +11,10 @@ namespace AutoServiceBook.Models
         public long VehicleId { get; set; }
 
         [Required(ErrorMessage = "The OwnerId is required.")]
+        [ForeignKey("Id")]
         public string OwnerId { get; set; }
+
+        public AppUser Owner { get; set; }
 
         [Required(ErrorMessage = "The vehicle type is required.")]
         public VehicleType Type { get; set; }

@@ -47,6 +47,13 @@
             "request": "launch",
             "url": "https://localhost:5001",
             "webRoot": "${workspaceRoot}/wwwroot"
+        },
+        {
+            "name": "Launch Edge",
+            "type": "edge",
+            "request": "launch",
+            "url": "https://localhost:5001",
+            "webRoot": "${workspaceRoot}/wwwroot"
         }
     ]
 }

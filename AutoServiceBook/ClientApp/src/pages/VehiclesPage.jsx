@@ -96,22 +96,17 @@ export class VehiclesPage extends Component {
                         this.vehiclesService.deleteVehicle(vehicle.vehicleId).then(() => {
                             this.setState({
                                 showForm: false,
-                                selectedVehicle: null
+                                selectedVehicle: null,
+                                isLoading: true
                             });
-                            toastr.success("Vehicle deleted!");
-                        })
+                        });
+                        toastr.success("Vehicle deleted!");
                     }
                 },
                 {
                     label: 'No',
                 }
-            ],
-            willUnmount: () => {
-                this.setState({
-                    isLoading: true,
-                    selectedVehicle: null
-                });
-            }
+            ]
         });
     }
 

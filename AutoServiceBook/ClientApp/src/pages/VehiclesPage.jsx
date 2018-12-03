@@ -6,7 +6,7 @@ import VehiclesService from '../utils/vehicles/VehiclesService';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import toastr from 'toastr';
-import 'toastr/build/toastr.css'
+import 'toastr/build/toastr.css';
 
 export class VehiclesPage extends Component {
     constructor() {
@@ -20,7 +20,7 @@ export class VehiclesPage extends Component {
             isLoading: true,
             selectedVehicle: null,
             showForm: false
-        }
+        };
     }
 
     componentDidMount() {
@@ -31,48 +31,6 @@ export class VehiclesPage extends Component {
         if (prevState.isLoading !== this.state.isLoading) {
             this.fetchVehicles();
         }
-    }
-
-    render() {
-        if (this.state.isLoading) {
-            return (<p>Loading...</p>);
-        }
-
-        const vehiclesList = this.state.vehicles.map((v, i) =>
-            <Panel eventKey={i} key={i}>
-                <Panel.Heading>
-                    <Panel.Title toggle>{v.make} {v.model} {v.licencePlate}</Panel.Title>
-                </Panel.Heading>
-                <Panel.Body collapsible>
-                    <VehicleDetails vehicle={v} />
-                </Panel.Body>
-                <Panel.Footer>
-                    <ButtonToolbar>
-                        <ButtonGroup>
-                            <Button bsStyle="warning" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Edit</Button>
-                            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Delete</Button>
-                        </ButtonGroup>
-                    </ButtonToolbar>
-                </Panel.Footer>
-            </Panel>
-        );
-
-        return (
-            <div>
-                <h2>Vehicles</h2>
-
-                <Well>
-                    <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick}></AddButton>
-                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} onSubmit={this.handleSubmit}>
-                        <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
-                    </VehiclesForm>
-                </Well>
-
-                <PanelGroup accordion id="vehicles-panel">
-                    {vehiclesList}
-                </PanelGroup>
-            </div>
-        );
     }
 
     fetchVehicles = () => {
@@ -117,7 +75,7 @@ export class VehiclesPage extends Component {
         let selectedVehicle = this.state.vehicles.find(v => v.vehicleId === parseInt(selectedVehicleId));
 
         this.setState({
-            selectedVehicle,
+            selectedVehicle
         });
 
         switch (selectedAction) {
@@ -150,6 +108,48 @@ export class VehiclesPage extends Component {
             showForm: false,
             selectedVehicle: null
         });
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (<p>Loading...</p>);
+        }
+
+        const vehiclesList = this.state.vehicles.map((v, i) =>
+            <Panel eventKey={i} key={i}>
+                <Panel.Heading>
+                    <Panel.Title toggle>{v.make} {v.model} {v.licencePlate}</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body collapsible>
+                    <VehicleDetails vehicle={v} />
+                </Panel.Body>
+                <Panel.Footer>
+                    <ButtonToolbar>
+                        <ButtonGroup>
+                            <Button bsStyle="warning" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Edit</Button>
+                            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleButtonClick} value={v.vehicleId}>Delete</Button>
+                        </ButtonGroup>
+                    </ButtonToolbar>
+                </Panel.Footer>
+            </Panel>
+        );
+
+        return (
+            <div>
+                <h2>Vehicles</h2>
+
+                <Well>
+                    <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick} />
+                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} onSubmit={this.handleSubmit}>
+                        <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
+                    </VehiclesForm>
+                </Well>
+
+                <PanelGroup accordion id="vehicles-panel">
+                    {vehiclesList}
+                </PanelGroup>
+            </div>
+        );
     }
 }
 

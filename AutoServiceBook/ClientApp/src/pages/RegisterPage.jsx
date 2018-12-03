@@ -4,6 +4,8 @@ import AuthenticationService from '../utils/authentication/AuthenticationService
 import AccountService from '../utils/account/AccountService';
 import { EmailInput, PasswordInput, FirstNameInput, LastNameInput } from '../components';
 import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
+import toastr from 'toastr';
+import 'toastr/build/toastr.css';
 
 export class RegisterPage extends Component {
     constructor() {
@@ -20,42 +22,7 @@ export class RegisterPage extends Component {
             lastname: '',
             errors: null,
             userCreated: false
-        }
-    }
-
-    render() {
-        if (this.state.userCreated) {
-            return (
-                <Alert bsStyle="success">
-                    <h4>Account registered!</h4>
-                    <p>
-                        You can now proceed to the login page.
-                </p>
-                </Alert>
-            );
-        } else {
-            return (
-                <div>
-                    <h2>Register</h2>
-
-                    <form onSubmit={this.handleSubmit}>
-                        <FirstNameInput onChange={this.handleChange} />
-                        <LastNameInput onChange={this.handleChange} />
-                        <EmailInput onChange={this.handleChange} />
-                        <PasswordInput onChange={this.handleChange} validate />
-                        <Alert bsStyle="info">
-                            <p>Passwords must be at least 6 characters.</p>
-                            <p>Passwords must have at least one non alphanumeric character.</p>
-                            <p>Passwords must have at least one digit ('0'-'9').</p>
-                            <p>Passwords must have at least one uppercase ('A'-'Z').</p>
-                        </Alert>
-
-                        <AlertBox error={this.state.errors}></AlertBox>
-                        <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Register</Button>
-                    </form>
-                </div>
-            );
-        }
+        };
     }
 
     componentDidUpdate() {
@@ -94,8 +61,8 @@ export class RegisterPage extends Component {
                         userCreated: true
                     });
                 } else {
-                    this.setState({
-                        errors: this.getErrors(response)
+                    response.forEach(element => {
+                        toastr.error(element.description);
                     });
                 }
             })
@@ -109,22 +76,42 @@ export class RegisterPage extends Component {
         let messages = '';
         response.forEach(element => {
             messages += '<p>' + element.description + '</p>';
-        })
+        });
 
         return messages;
     }
-}
 
-function AlertBox(props) {
-    if (props.error === null) {
-        return null;
+    render() {
+        if (this.state.userCreated) {
+            return (
+                <Alert bsStyle="success">
+                    <h4>Account registered!</h4>
+                    <p>
+                        You can now proceed to the login page.
+                </p>
+                </Alert>
+            );
+        } else {
+            return (
+                <div>
+                    <h2>Register</h2>
+
+                    <form onSubmit={this.handleSubmit}>
+                        <FirstNameInput onChange={this.handleChange} />
+                        <LastNameInput onChange={this.handleChange} />
+                        <EmailInput onChange={this.handleChange} />
+                        <PasswordInput onChange={this.handleChange} validate />
+                        <Alert bsStyle="info">
+                            <p>Passwords must be at least 6 characters.</p>
+                            <p>Passwords must have at least one non alphanumeric character.</p>
+                            <p>Passwords must have at least one digit ('0'-'9').</p>
+                            <p>Passwords must have at least one uppercase ('A'-'Z').</p>
+                        </Alert>
+
+                        <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Register</Button>
+                    </form>
+                </div>
+            );
+        }
     }
-
-    return (
-        <div>
-            <Alert bsStyle="danger">
-                <div dangerouslySetInnerHTML={{ __html: props.error }}></div>
-            </Alert>
-        </div>
-    );
 }

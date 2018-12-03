@@ -8,7 +8,8 @@ export class TextInput extends Component {
         this.state = {
             text: "",
             type: "text",
-            minLength: 0
+            minLength: 0,
+            maxLength: 255
         }
     }
 
@@ -16,7 +17,8 @@ export class TextInput extends Component {
         if (this.props.value && this.props != prevProps) {
             this.setState({
                 text: this.props.value.toString(),
-                minLength: this.props.minLength || 0
+                minLength: this.props.minLength || 0,
+                maxLength: this.props.maxLength || 255
             })
         }
     }
@@ -44,7 +46,7 @@ export class TextInput extends Component {
 
     validationState = () => {
         if (this.props.required) {
-            if (this.state.text && this.state.text.length >= this.state.minLength) {
+            if (this.state.text && this.state.text.length >= this.state.minLength && this.state.text.length <= this.state.maxLength) {
                 return 'success';
             }
             return 'error';

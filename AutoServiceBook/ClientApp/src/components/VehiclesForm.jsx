@@ -69,10 +69,10 @@ export class VehiclesForm extends Component {
                     <NumericInput controlId="engineHorsepower" label="Engine horsepower" onChange={this.handleChange} value={this.state.vehicle.engineHorsepower}></NumericInput>
                     <SelectInput controlId="fuelType" label="Fuel Type" options={fuelOptions} onChange={this.handleChange} selected={this.state.vehicle.fuelType}></SelectInput>
                     <TextInput controlId="vin" label="VIN number" onChange={this.handleChange} value={this.state.vehicle.vin}></TextInput>
-                    <DateInput controlId="registerDate" label="Register date" onChange={this.handleChange} value={this.state.vehicle.registerDate | ""}></DateInput>
-                    <DateInput controlId="nextServiceDate" label="Next service date" onChange={this.handleChange} value={this.state.vehicle.nextServiceDate | ""}></DateInput>
+                    <DateInput controlId="registerDate" label="Register date" onChange={this.handleChange} value={this.state.vehicle.registerDate}></DateInput>
+                    <DateInput controlId="nextServiceDate" label="Next service date" onChange={this.handleChange} value={this.state.vehicle.nextServiceDate}></DateInput>
                     <TextInput controlId="insuranceNumber" label="Insurance number" onChange={this.handleChange} value={this.state.vehicle.insuranceNumber}></TextInput>
-                    <DateInput controlId="insuranceExpireDate" label="Insurance expire date" onChange={this.handleChange} value={this.state.vehicle.insuranceExpireDate | ""}></DateInput>
+                    <DateInput controlId="insuranceExpireDate" label="Insurance expire date" onChange={this.handleChange} value={this.state.vehicle.insuranceExpireDate}></DateInput>
                     <Button type="submit" bsStyle="primary">{this.state.buttonText}</Button>
                     {this.props.children}
                 </form>

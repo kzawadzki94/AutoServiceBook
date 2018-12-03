@@ -24,7 +24,7 @@ export class DateInput extends Component {
             <FormGroup controlId={this.props.controlId}>
                 <ControlLabel>{this.props.label}</ControlLabel>
                 <InputGroup>
-                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.formatDate(this.props.value.toString())} />
+                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.formatDate(this.props.value)} />
                     <FormControl.Feedback />
                 </InputGroup>
             </FormGroup>
@@ -41,7 +41,10 @@ export class DateInput extends Component {
     }
 
     formatDate = (date) => {
-        if (date.includes('T')) {
+        if (!date)
+            return "";
+
+        if (date.toString().includes('T')) {
             return date.toString().substring(0, date.indexOf('T'));
         }
         return date;

@@ -148,6 +148,7 @@ export class VehiclesPage extends Component {
         this.setState({
             isLoading: true,
             showForm: false,
+            selectedVehicle: null
         });
     }
 }

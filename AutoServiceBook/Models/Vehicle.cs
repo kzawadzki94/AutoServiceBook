@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,7 +45,7 @@ namespace AutoServiceBook.Models
 
         public int EngineHorsepower { get; set; }
 
-        public long Mileage { get; set; }
+        public ulong Mileage { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? RegisterDate { get; set; }
@@ -56,5 +57,7 @@ namespace AutoServiceBook.Models
         public DateTime? NextServiceDate { get; set; }
 
         public string InsuranceNumber { get; set; }
+
+        public ICollection<Expense> Expenses { get; set; }
     }
 }

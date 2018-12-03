@@ -10,5 +10,7 @@ namespace AutoServiceBook.Data
         { }
 
         public DbSet<Vehicle> Vehicles { get; set; }
+
+        public DbSet<Expense> Expenses { get; set; }
     }
 }

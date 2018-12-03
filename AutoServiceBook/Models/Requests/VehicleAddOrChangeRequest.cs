@@ -36,7 +36,7 @@ namespace AutoServiceBook.Models.Requests
 
         public int EngineHorsepower { get; set; }
 
-        public long Mileage { get; set; }
+        public ulong Mileage { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? RegisterDate { get; set; }

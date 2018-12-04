@@ -16,6 +16,9 @@ namespace AutoServiceBook.Models
 
         public Vehicle Vehicle { get; set; }
 
+        [Required(ErrorMessage = "Owner id must be provided!")]
+        public string OwnerId { get; set; }
+
         [Required(ErrorMessage = "The expense type must be provided.")]
         public ExpenseType Type { get; set; }
 

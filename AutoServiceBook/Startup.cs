@@ -58,6 +58,7 @@ namespace AutoServiceBook
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IRepository<Vehicle>, VehiclesRepository>();
+            services.AddScoped<IRepository<Expense>, ExpensesRepository>();
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {

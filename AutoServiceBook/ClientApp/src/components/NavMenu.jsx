@@ -43,26 +43,35 @@ function MenuLinks(props) {
 function AuthorizedMenuLinks() {
   return (
     <React.Fragment>
-      <LinkContainer to={'/home'}>
+    <LinkContainer to={'/home'}>
         <NavItem>
-          <Glyphicon glyph='home' /> Home
-      </NavItem>
-      </LinkContainer>
-      <LinkContainer to={'/account'}>
+            <Glyphicon glyph='home' /> Home
+        </NavItem>
+    </LinkContainer>
+
+    <LinkContainer to={'/account'}>
         <NavItem>
-          <Glyphicon glyph='user' /> Account
-      </NavItem>
-      </LinkContainer>
-      <LinkContainer to={'/vehicles'}>
+            <Glyphicon glyph='user' /> Account
+        </NavItem>
+    </LinkContainer>
+
+    <LinkContainer to={'/vehicles'}>
         <NavItem>
-          <Glyphicon glyph='road' /> Vehicles
-      </NavItem>
-      </LinkContainer>
-      <LinkContainer to={'/logout'}>
+            <Glyphicon glyph='road' /> Vehicles
+        </NavItem>
+    </LinkContainer>
+
+    <LinkContainer to={'/expenses'}>
         <NavItem>
-          <Glyphicon glyph='log-out' /> Logout
-      </NavItem>
-      </LinkContainer>
+            <Glyphicon glyph='euro' /> Expenses
+        </NavItem>
+    </LinkContainer>
+
+    <LinkContainer to={'/logout'}>
+        <NavItem>
+            <Glyphicon glyph='log-out' /> Logout
+        </NavItem>
+    </LinkContainer>
     </React.Fragment>
   );
 }
@@ -70,16 +79,17 @@ function AuthorizedMenuLinks() {
 function NotAuthorizedMenuLinks() {
   return (
     <React.Fragment>
-      <LinkContainer to={'/register'}>
+    <LinkContainer to={'/register'}>
         <NavItem>
-          <Glyphicon glyph='registration-mark' /> Register
-      </NavItem>
-      </LinkContainer>
-      <LinkContainer to={'/login'}>
+            <Glyphicon glyph='registration-mark' /> Register
+        </NavItem>
+    </LinkContainer>
+
+    <LinkContainer to={'/login'}>
         <NavItem>
-          <Glyphicon glyph='log-in' /> Login
-      </NavItem>
-      </LinkContainer>
+        <Glyphicon glyph='log-in' /> Login
+        </NavItem>
+    </LinkContainer>
     </React.Fragment>
   );
 }

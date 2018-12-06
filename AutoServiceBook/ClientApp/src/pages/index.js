@@ -15,7 +15,10 @@ import {
 } from './RegisterPage';
 import {
     VehiclesPage
-} from './VehiclesPage'
+} from './VehiclesPage';
+import {
+    ExpensesPage
+} from './ExpensesPage';
 
 export {
     HomePage,
@@ -23,5 +26,6 @@ export {
     LogoutPage,
     AccountPage,
     RegisterPage,
-    VehiclesPage
+    VehiclesPage,
+    ExpensesPage
 }

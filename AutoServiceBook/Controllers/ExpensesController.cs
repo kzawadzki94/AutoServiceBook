@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoServiceBook.Models;
+using AutoServiceBook.Models.Requests;
 using AutoServiceBook.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -70,7 +71,7 @@ namespace AutoServiceBook.Controllers
         }
         // POST: api/Expenses
         [HttpPost]
-        public async Task<IActionResult> PostExpense([FromBody] Expense request)
+        public async Task<IActionResult> PostExpense([FromBody] ExpenseAddOrChangeRequest request)
         {
             if (!ModelState.IsValid || !TryValidateModel(request))
                 return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
@@ -78,19 +79,21 @@ namespace AutoServiceBook.Controllers
             if (request.OwnerId != getCurrentUserId())
                 return Unauthorized();
 
-            await _repo.AddAsync(request);
+            var expense = _mapper.Map<Expense>(request);
 
-            return CreatedAtAction("GetVehicle", new { id = request.ExpenseId }, request);
+            await _repo.AddAsync(expense);
+
+            return CreatedAtAction("GetExpense", new { id = expense.ExpenseId }, request);
         }
 
         // PUT: api/Expenses/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExpense([FromRoute] long id, [FromBody] Expense request)
+        public async Task<IActionResult> PutExpense([FromRoute] long id, [FromBody] ExpenseAddOrChangeRequest request)
         {
             if (!ModelState.IsValid || !TryValidateModel(request))
                 return BadRequest(ModelState.Values.SelectMany(m => m.Errors));
 
-            //var expense = _mapper.Map<Vehicle>(request);
+            var expense = _mapper.Map<Expense>(request);
 
             var currentExpense = await _repo.GetByIdWithoutTrackingAsync(id);
 
@@ -100,10 +103,9 @@ namespace AutoServiceBook.Controllers
             if (currentExpense.OwnerId != getCurrentUserId())
                 return Unauthorized();
 
-            //expense.VehicleId = id;
-            //expense.OwnerId = currentExpense.OwnerId;
+            expense.ExpenseId = id;
 
-            var updateSucceed = await _repo.UpdateAsync(request);
+            var updateSucceed = await _repo.UpdateAsync(expense);
 
             if (!updateSucceed)
                 return NotFound();

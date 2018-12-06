@@ -21,6 +21,9 @@ namespace AutoServiceBook.MappingProfiles
 
             // Vehicle
             CreateMap<VehicleAddOrChangeRequest, Vehicle>();
+
+            // Expense
+            CreateMap<ExpenseAddOrChangeRequest, Expense>();
         }
     }
 }

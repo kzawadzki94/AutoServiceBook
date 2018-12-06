@@ -22,17 +22,6 @@ namespace AutoServiceBook.Repositories
         public async Task AddAsync(Expense entity)
         {
             _context.Expenses.Add(entity);
-
-            var vehicle = await _vehicleRepo.GetByIdAsync(entity.VehicleId);
-
-            if (vehicle.Mileage < entity.Mileage)
-            {
-                vehicle.Mileage = entity.Mileage;
-                var result = await _vehicleRepo.UpdateAsync(vehicle);
-                if (!result)
-                    throw new InvalidOperationException("Could not update vehicle while adding expense");
-            }
-
             await _context.SaveChangesAsync();
         }
 

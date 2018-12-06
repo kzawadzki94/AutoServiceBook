@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoServiceBook.Models;
 using AutoServiceBook.Models.Requests;
+using AutoServiceBook.Models.Responses;
 using AutoServiceBook.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -60,15 +61,16 @@ namespace AutoServiceBook.Controllers
             if (expense.OwnerId != getCurrentUserId())
                 return Unauthorized();
 
-            return Ok(expense);
+            var response = _mapper.Map<ExpenseResponse>(expense);
+
+            return Ok(response);
         }
 
         // GET: api/Expenses
         [HttpGet]
-        public IEnumerable<Expense> GetExpenses()
-        {
-            return _repo.GetAll().Where(e => e.OwnerId == getCurrentUserId());
-        }
+        public IEnumerable<ExpenseResponse> GetExpenses()
+            => _repo.GetAll().Where(e => e.OwnerId == getCurrentUserId()).Select(e => _mapper.Map<ExpenseResponse>(e));
+
         // POST: api/Expenses
         [HttpPost]
         public async Task<IActionResult> PostExpense([FromBody] ExpenseAddOrChangeRequest request)

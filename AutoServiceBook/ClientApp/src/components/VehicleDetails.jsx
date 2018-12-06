@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import VehicleFormatter from '../utils/vehicles/VehicleFormatter';
+import CommonFormatter from '../utils/common/CommonFormatter';
 
 export class VehicleDetails extends Component {
     constructor(props) {
         super(props);
-        this.vehicleFormatter = new VehicleFormatter();
+        this.vehicleFormatter = new CommonFormatter();
 
         this.state = {
             vehicle: null,

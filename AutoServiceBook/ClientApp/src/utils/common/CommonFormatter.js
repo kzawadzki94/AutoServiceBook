@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default class VehicleFormatter {
+export default class CommonFormatter {
     getFormattedVehicle(vehicle) {
         return {
             vehicleId: vehicle.vehicleId,
@@ -19,7 +19,7 @@ export default class VehicleFormatter {
             insuranceExpireDate: this.formatDate(vehicle.insuranceExpireDate) + " (" + this.formatRelativeDate(vehicle.insuranceExpireDate) + ")",
             nextServiceDate: this.formatDate(vehicle.nextServiceDate) + " (" + this.formatRelativeDate(vehicle.nextServiceDate) + ")",
             insuranceNumber: this.formatEmptyOrNull(vehicle.insuranceNumber)
-        }
+        };
     }
 
     formatVehicleType(type) {
@@ -58,6 +58,23 @@ export default class VehicleFormatter {
         }
     }
 
+    formatExpenseType(type) {
+        switch (type) {
+            case 0:
+                return "Service";
+            case 1:
+                return "Spare part";
+            case 2:
+                return "Fuel";
+            case 3:
+                return "Insurance";
+            case 4:
+                return "Other";
+            default:
+                return "N/A";
+        }
+    }
+
     formatEmptyOrNull(s) {
         if (s === undefined || s === null || s === "string" || s === "" || s === 0 || s === "0") {
             return "N/A";
@@ -65,6 +82,7 @@ export default class VehicleFormatter {
             return s;
         }
     }
+
 
     formatDate(d) {
         if (d === undefined || d === null || d === "" || d === "string") {

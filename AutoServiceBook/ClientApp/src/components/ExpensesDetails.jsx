@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import CommonFormatter from '../utils/common/CommonFormatter';
+import { ExpensesContext } from '../pages/ExpensesPage';
 
 export class ExpensesDetails extends Component {
     constructor(props) {
@@ -10,11 +11,6 @@ export class ExpensesDetails extends Component {
 
         this.formatter = new CommonFormatter();
     }
-
-
-    handleButtonClick = (e) => {
-        console.log(e.target.value);
-    };
 
     render() {
         const columns = [
@@ -55,7 +51,7 @@ export class ExpensesDetails extends Component {
             {
                 Header: '',
                 accessor: 'expenseId',
-                Cell: props => <Button onClick={this.handleButtonClick} bsStyle="warning" bsSize="xsmall" value={props.value}>Edit</Button>,
+                Cell: props => <Button onClick={this.context.handleButtonClick} bsStyle="warning" bsSize="xsmall" value={props.value}>Edit</Button>,
                 sortable: false,
                 resizable: false,
                 minWidth: 30
@@ -63,7 +59,7 @@ export class ExpensesDetails extends Component {
             {
                 Header: '',
                 accessor: 'expenseId',
-                Cell: props => <Button onClick={this.handleButtonClick} bsStyle="danger" bsSize="xsmall" value={props.value}>Delete</Button>,
+                Cell: props => <Button onClick={this.context.handleButtonClick} bsStyle="danger" bsSize="xsmall" value={props.value}>Delete</Button>,
                 sortable: false,
                 resizable: false,
                 minWidth: 30
@@ -71,7 +67,8 @@ export class ExpensesDetails extends Component {
         ];
 
         return (
-                <ReactTable data={this.props.data} columns={columns} defaultPageSize={10} defaultSorted={[{ id: "date", desc: true }]} />
+            <ReactTable data={this.context.expenses} columns={columns} defaultPageSize={10} defaultSorted={[{ id: "date", desc: true }]} />
         );
     }
 }
+ExpensesDetails.contextType = ExpensesContext;

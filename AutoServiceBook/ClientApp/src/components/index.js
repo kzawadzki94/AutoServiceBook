@@ -34,6 +34,9 @@ import {
 import {
     VehiclesForm
 } from './VehiclesForm';
+import {
+    ExpensesDetails
+} from './ExpensesDetails';
 
 export {
     Layout,
@@ -47,5 +50,6 @@ export {
     NumericInput,
     DateInput,
     VehicleDetails,
-    VehiclesForm
+    VehiclesForm,
+    ExpensesDetails
 }

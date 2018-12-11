@@ -6,13 +6,14 @@ import CommonFormatter from '../utils/common/CommonFormatter';
 import { ExpensesContext } from '../pages/ExpensesPage';
 
 export class ExpensesDetails extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.formatter = new CommonFormatter();
     }
 
     render() {
+
         const columns = [
             {
                 Header: 'Date',
@@ -34,6 +35,11 @@ export class ExpensesDetails extends Component {
             {
                 Header: 'Price',
                 accessor: 'price',
+                minWidth: 40
+            },
+            {
+                Header: 'Total',
+                Cell: props => props.original.count * props.original.price,
                 minWidth: 40
             },
             {

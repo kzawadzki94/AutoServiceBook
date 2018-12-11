@@ -13,7 +13,7 @@ export class ExpensesDetails extends Component {
     }
 
     getVehicleById = (id) => {
-        return this.context.vehicles.find(v => v.vehicleId == id);
+        return this.context.vehicles.find(v => v.vehicleId === id);
     }
 
     render() {
@@ -22,7 +22,7 @@ export class ExpensesDetails extends Component {
             {
                 Header: 'Vehicle',
                 accessor: 'vehicleId',
-                Cell: props => this.getVehicleById(props.value).make + ' ' + this.getVehicleById(props.value).model + ' ' + this.getVehicleById(props.value).year
+                Cell: props => this.getVehicleById(props.value).make + ' ' + this.getVehicleById(props.value).model + ' ' + this.getVehicleById(props.value).licencePlate
             },
             {
                 Header: 'Date',

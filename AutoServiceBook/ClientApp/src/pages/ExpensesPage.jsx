@@ -10,6 +10,7 @@ import AuthenticationService from '../utils/authentication/AuthenticationService
 import ExpensesService from '../utils/expenses/ExpensesService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
 import CommonFormatter from '../utils/common/CommonFormatter';
+import moment from 'moment';
 
 export const ExpensesContext = React.createContext();
 
@@ -28,7 +29,7 @@ export class ExpensesPage extends Component {
             isLoading: true,
             showForm: false,
             buttonText: "Add",
-            selectedExpense: this.getExpenseEmptyState(),
+            selectedExpense: this.getExpenseEmptyState()
         };
     }
 
@@ -68,10 +69,14 @@ export class ExpensesPage extends Component {
         if (this.state.selectedExpense.ownerId) {
             this.expensesService.editExpense(this.state.selectedExpense)
                 .then(response => {
-                    toastr.success("Expense updated!");
+                    return this.vehiclesService.updateOdometerIfNeeded(this.state.selectedExpense.vehicleId, this.state.selectedExpense.mileage);
+                })
+                .then(response => {
                     this.toggleForm();
                     this.reload();
-                }).catch(error => {
+                    toastr.success("Expense updated!");
+                })
+                .catch(error => {
                     toastr.error("Update failed", "Failed to update expense");
                     this.displayErrors(error);
                 });
@@ -79,10 +84,14 @@ export class ExpensesPage extends Component {
         else {
             this.expensesService.addExpense(this.state.selectedExpense)
                 .then(response => {
+                    return this.vehiclesService.updateOdometerIfNeeded(this.state.selectedExpense.vehicleId, this.state.selectedExpense.mileage);
+                })
+                .then(response => {
                     this.toggleForm();
                     this.reload();
                     toastr.success("Expense added!");
-                }).catch(error => {
+                })
+                .catch(error => {
                     toastr.error("Add failed", "Failed to add expense");
                     this.displayErrors(error);
                 });
@@ -166,7 +175,7 @@ export class ExpensesPage extends Component {
     getExpenseEmptyState = () => {
         return {
             ownerId: null,
-            date: "",
+            date: moment().format(),
             type: "0",
             count: "",
             price: "",

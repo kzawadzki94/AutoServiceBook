@@ -18,6 +18,14 @@ export default class VehiclesService {
         });
     }
 
+    getVehicle(id) {
+        return this.auth.fetch(this.vehiclesEndpoint + '/' + id, {
+            method: 'GET'
+        }).then(response => {
+            return Promise.resolve(response);
+        });
+    }
+
     deleteVehicle(id) {
         return this.auth.fetch(this.vehiclesEndpoint + '/' + id, {
             method: 'DELETE'
@@ -46,4 +54,18 @@ export default class VehiclesService {
         });
     }
 
+    updateOdometerIfNeeded(id, newMileage) {
+        if (!newMileage || newMileage === "" || newMileage === "0" || newMileage === 0) {
+            return;
+        }
+
+        return this.getVehicle(id)
+            .then(response => {
+                if (parseInt(newMileage) >= parseInt(response.mileage)) {
+                    let v = Object.assign({}, response);
+                    v.mileage = newMileage;
+                    return this.editVehicle(v);
+                }
+            });
+    }
 }

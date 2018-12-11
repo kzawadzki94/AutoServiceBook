@@ -23,7 +23,7 @@ export class ExpensesForm extends Component {
             { key: "Other", value: 4 },
         ];
 
-        let vehiclesOptions = this.context.vehicles.map(v => ({ key: v.make + ' ' + v.model + ' ' + v.year, value: v.vehicleId }));
+        let vehiclesOptions = this.context.vehicles.map(v => ({ key: v.make + ' ' + v.model + ' ' + v.licencePlate, value: v.vehicleId }));
 
         return (
             <React.Fragment>

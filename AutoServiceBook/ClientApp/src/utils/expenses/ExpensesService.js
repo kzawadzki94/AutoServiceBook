@@ -38,6 +38,7 @@ export default class ExpensesService {
     addExpense(expense) {
         let e = Object.assign({}, expense);
         e.ownerId = this.user_id;
+        e.price = e.price.replace(',', '.');
         return this.auth.fetch(this.expensesEndpoint, {
             method: 'POST',
             body: JSON.stringify(e)

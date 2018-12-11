@@ -8,6 +8,7 @@ import 'toastr/build/toastr.css';
 import { ExpensesDetails, ExpensesForm } from '../components';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import ExpensesService from '../utils/expenses/ExpensesService';
+import VehiclesService from '../utils/vehicles/VehiclesService';
 import CommonFormatter from '../utils/common/CommonFormatter';
 
 export const ExpensesContext = React.createContext();
@@ -18,24 +19,26 @@ export class ExpensesPage extends Component {
 
         this.auth = new AuthenticationService();
         this.expensesService = new ExpensesService(this.auth);
+        this.vehiclesService = new VehiclesService(this.auth);
         this.formatter = new CommonFormatter();
 
         this.state = {
+            vehicles: null,
             expenses: null,
             isLoading: true,
             showForm: false,
             buttonText: "Add",
-            selectedExpense: this.getExpenseEmptyState()
+            selectedExpense: this.getExpenseEmptyState(),
         };
     }
 
     componentDidMount() {
-        this.fetchExpenses();
+        this.fetchData();
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isLoading !== this.state.isLoading) {
-            this.fetchExpenses();
+            this.fetchData();
         }
     }
 
@@ -50,13 +53,39 @@ export class ExpensesPage extends Component {
                 this.deleteExpense(selectedExpense);
                 break;
             case "Edit":
-                selectedExpense.date = this.formatter.formatDateInput(selectedExpense.date);
                 this.setState({
                     selectedExpense,
                     showForm: true,
                     buttonText: "Update"
                 });
                 break;
+        }
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (this.state.selectedExpense.ownerId) {
+            this.expensesService.editExpense(this.state.selectedExpense)
+                .then(response => {
+                    toastr.success("Expense updated!");
+                    this.toggleForm();
+                    this.reload();
+                }).catch(error => {
+                    toastr.error("Update failed", "Failed to update expense");
+                    this.displayErrors(error);
+                });
+        }
+        else {
+            this.expensesService.addExpense(this.state.selectedExpense)
+                .then(response => {
+                    this.toggleForm();
+                    this.reload();
+                    toastr.success("Expense added!");
+                }).catch(error => {
+                    toastr.error("Add failed", "Failed to add expense");
+                    this.displayErrors(error);
+                });
         }
     }
 
@@ -75,12 +104,30 @@ export class ExpensesPage extends Component {
         });
     }
 
-    fetchExpenses = () => {
-        this.expensesService.getExpenses()
-            .then(response => {
+    displayErrors = (error) => {
+        let arr = Array.from(Object.keys(error), k => error[k]);
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] instanceof Array) {
+                this.displayErrors(arr[i]);
+            } else {
+                toastr.error(arr[i]);
+            }
+        }
+    }
+
+    fetchData = () => {
+        Promise.all([
+            this.vehiclesService.getVehicles(),
+            this.expensesService.getExpenses()
+        ])
+            .then(([vehicles, expenses]) => {
+                let selectedExpense = this.getExpenseEmptyState();
+                selectedExpense.vehicleId = vehicles[0].vehicleId;
                 this.setState({
-                    expenses: response,
-                    isLoading: false
+                    expenses,
+                    vehicles,
+                    isLoading: false,
+                    selectedExpense
                 });
             });
     }
@@ -88,7 +135,7 @@ export class ExpensesPage extends Component {
     deleteExpense = (expense) => {
         confirmAlert({
             title: 'Confirm expense delete',
-            message: 'Are you sure to expense from ' + expense.date + '?',
+            message: 'Are you sure to expense from ' + this.formatter.formatDate(expense.date) + '?',
             buttons: [
                 {
                     label: 'Yes',
@@ -107,9 +154,11 @@ export class ExpensesPage extends Component {
     }
 
     toggleForm = () => {
+        let selectedExpense = this.getExpenseEmptyState();
+        selectedExpense.vehicleId = this.state.vehicles[0].vehicleId;
         this.setState({
             showForm: !this.state.showForm,
-            selectedExpense: this.getExpenseEmptyState(),
+            selectedExpense: selectedExpense,
             buttonText: "Add"
         });
     }
@@ -122,7 +171,7 @@ export class ExpensesPage extends Component {
             count: "",
             price: "",
             details: "",
-            mileage: ""
+            mileage: "0"
         };
     }
 
@@ -137,8 +186,10 @@ export class ExpensesPage extends Component {
 
                 <ExpensesContext.Provider value={{
                     expenses: this.state.expenses,
+                    vehicles: this.state.vehicles,
                     handleButtonClick: this.handleButtonClick,
                     handleChange: this.handleChange,
+                    handleSubmit: this.handleSubmit,
                     showForm: this.state.showForm,
                     buttonText: this.state.buttonText,
                     toggleForm: this.toggleForm,

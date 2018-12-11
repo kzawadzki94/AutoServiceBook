@@ -23,15 +23,17 @@ export class ExpensesForm extends Component {
             { key: "Other", value: 4 },
         ];
 
+        let vehiclesOptions = this.context.vehicles.map(v => ({ key: v.make + ' ' + v.model + ' ' + v.year, value: v.vehicleId }));
+
         return (
             <React.Fragment>
                 <h2>{this.context.buttonText} expense</h2>
                 <form onSubmit={this.context.handleSubmit}>
-
+                    <SelectInput controlId="vehicleId" label="Vehicle" options={vehiclesOptions} onChange={this.context.handleChange} selected={this.context.selectedExpense.vehicleId} />
                     <DateInput controlId="date" label="Date" onChange={this.context.handleChange} value={this.context.selectedExpense.date} required />
                     <SelectInput controlId="type" label="Expense Type" options={typeOptions} onChange={this.context.handleChange} selected={this.context.selectedExpense.type} />
                     <NumericInput controlId="count" label="Count" onChange={this.context.handleChange} value={this.context.selectedExpense.count} required />
-                    <NumericInput controlId="price" label="Price" onChange={this.context.handleChange} value={this.context.selectedExpense.price} required />
+                    <NumericInput controlId="price" label="Price" onChange={this.context.handleChange} value={this.context.selectedExpense.price} required step="0.01"/>
                     <TextInput controlId="details" label="Details" onChange={this.context.handleChange} value={this.context.selectedExpense.details} />
                     <NumericInput controlId="mileage" label="Odometer - km" onChange={this.context.handleChange} value={this.context.selectedExpense.mileage} />
                     <Button type="submit" bsStyle="primary">{this.context.buttonText}</Button>

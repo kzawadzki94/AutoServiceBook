@@ -12,13 +12,22 @@ export class ExpensesDetails extends Component {
         this.formatter = new CommonFormatter();
     }
 
+    getVehicleById = (id) => {
+        return this.context.vehicles.find(v => v.vehicleId == id);
+    }
+
     render() {
 
         const columns = [
             {
+                Header: 'Vehicle',
+                accessor: 'vehicleId',
+                Cell: props => this.getVehicleById(props.value).make + ' ' + this.getVehicleById(props.value).model + ' ' + this.getVehicleById(props.value).year
+            },
+            {
                 Header: 'Date',
                 accessor: 'date',
-                minWidth: 50,
+                minWidth: 80,
                 Cell: props => this.formatter.formatDate(props.value)
             },
             {
@@ -30,29 +39,28 @@ export class ExpensesDetails extends Component {
             {
                 Header: 'Count',
                 accessor: 'count',
-                minWidth: 20
+                minWidth: 30
             },
             {
                 Header: 'Price',
                 accessor: 'price',
-                minWidth: 40
+                minWidth: 50
             },
             {
                 Header: 'Total',
                 Cell: props => props.original.count * props.original.price,
-                minWidth: 40
+                minWidth: 50
             },
             {
                 Header: 'Details',
                 accessor: 'details',
                 Cell: props => this.formatter.formatEmptyOrNull(props.value),
-                minWidth: 120
             },
             {
                 Header: 'Odometer',
                 accessor: 'mileage',
                 Cell: props => this.formatter.formatEmptyOrNull(props.value) + " km",
-                minWidth: 80
+                minWidth: 60
             },
             {
                 Header: '',

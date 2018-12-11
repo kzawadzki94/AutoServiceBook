@@ -32,11 +32,12 @@ export class TextInput extends Component {
     }
 
     render() {
+
         return (
             <FormGroup controlId={this.props.controlId} validationState={this.validationState()}>
                 <ControlLabel>{this.props.label}</ControlLabel>
                 <InputGroup>
-                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.props.value.toString()} />
+                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.props.value.toString()} step={this.props.step}/>
                     <FormControl.Feedback />
                 </InputGroup>
             </FormGroup>

@@ -7,28 +7,22 @@ export class DateInput extends Component {
 
         this.state = {
             value: "",
-            type: "date",
-        }
+            type: "date"
+        };
+    }
+
+    componentDidMount() {
+        this.setState({
+            value: this.formatDate(this.props.value.toString())
+        });
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.value && this.props.value != prevProps.value) {
             this.setState({
-                value: this.formatDate(this.props.value.toString()),
-            })
+                value: this.formatDate(this.props.value.toString())
+            });
         }
-    }
-
-    render() {
-        return (
-            <FormGroup controlId={this.props.controlId}>
-                <ControlLabel>{this.props.label}</ControlLabel>
-                <InputGroup>
-                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.formatDate(this.props.value)} />
-                    <FormControl.Feedback />
-                </InputGroup>
-            </FormGroup>
-        );
     }
 
     handleChange = (e) => {
@@ -48,5 +42,26 @@ export class DateInput extends Component {
             return date.toString().substring(0, date.indexOf('T'));
         }
         return date;
+    }
+
+    validationState = () => {
+        if (this.props.required) {
+            if (this.state.value || this.state.value !== "") {
+                return 'success';
+            }
+            return 'error';
+        }
+    }
+
+    render() {
+        return (
+            <FormGroup controlId={this.props.controlId} validationState={this.validationState()}>
+                <ControlLabel>{this.props.label}</ControlLabel>
+                <InputGroup>
+                    <FormControl type={this.state.type} onChange={this.handleChange} value={this.formatDate(this.props.value)} />
+                    <FormControl.Feedback />
+                </InputGroup>
+            </FormGroup>
+        );
     }
 }

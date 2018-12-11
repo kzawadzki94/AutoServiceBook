@@ -13,14 +13,22 @@ export class TextInput extends Component {
         }
     }
 
+    componentDidMount() {
+        this.setParameters();
+    }
+
     componentDidUpdate(prevProps) {
-        if (this.props.value && this.props != prevProps) {
-            this.setState({
-                text: this.props.value.toString(),
-                minLength: this.props.minLength || 0,
-                maxLength: this.props.maxLength || 255
-            })
+        if (this.props.value && this.props.value != prevProps.value) {
+            this.setParameters();
         }
+    }
+
+    setParameters = () => {
+        this.setState({
+            text: this.props.value.toString(),
+            minLength: this.props.minLength || 0,
+            maxLength: this.props.maxLength || 255
+        })
     }
 
     render() {
@@ -46,7 +54,7 @@ export class TextInput extends Component {
 
     validationState = () => {
         if (this.props.required) {
-            if (this.state.text && this.state.text.length >= this.state.minLength && this.state.text.length <= this.state.maxLength) {
+            if (this.state.text && this.state.text.toString().length >= this.state.minLength && this.state.text.toString().length <= this.state.maxLength) {
                 return 'success';
             }
             return 'error';

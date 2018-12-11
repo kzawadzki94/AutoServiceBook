@@ -37,6 +37,9 @@ import {
 import {
     ExpensesDetails
 } from './ExpensesDetails';
+import {
+    ExpensesForm
+} from './ExpensesForm';
 
 export {
     Layout,
@@ -51,5 +54,6 @@ export {
     DateInput,
     VehicleDetails,
     VehiclesForm,
-    ExpensesDetails
+    ExpensesDetails,
+    ExpensesForm
 }

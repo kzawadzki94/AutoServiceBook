@@ -91,6 +91,16 @@ export default class CommonFormatter {
         return moment(d).format("DD MMMM YYYY");
     }
 
+    formatDateInput(date) {
+        if (!date)
+            return "";
+
+        if (date.toString().includes('T')) {
+            return date.toString().substring(0, date.indexOf('T'));
+        }
+        return date;
+    }
+
     formatRelativeDate(d) {
         if (d === undefined || d === null || d === "" || d === "string") {
             return "N/A";

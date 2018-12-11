@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import 'react-table/react-table.css';
-import { ExpensesDetails } from '../components/ExpensesDetails';
-import AuthenticationService from '../utils/authentication/AuthenticationService';
-import CommonFormatter from '../utils/common/CommonFormatter';
-import ExpensesService from '../utils/expenses/ExpensesService';
+import { Well } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-table/react-table.css';
 import toastr from 'toastr';
 import 'toastr/build/toastr.css';
+import { ExpensesDetails, ExpensesForm } from '../components';
+import AuthenticationService from '../utils/authentication/AuthenticationService';
+import ExpensesService from '../utils/expenses/ExpensesService';
+import CommonFormatter from '../utils/common/CommonFormatter';
 
 export const ExpensesContext = React.createContext();
 
@@ -17,10 +18,14 @@ export class ExpensesPage extends Component {
 
         this.auth = new AuthenticationService();
         this.expensesService = new ExpensesService(this.auth);
+        this.formatter = new CommonFormatter();
 
         this.state = {
             expenses: null,
-            isLoading: true
+            isLoading: true,
+            showForm: false,
+            buttonText: "Add",
+            selectedExpense: this.getExpenseEmptyState()
         };
     }
 
@@ -44,7 +49,24 @@ export class ExpensesPage extends Component {
             case "Delete":
                 this.deleteExpense(selectedExpense);
                 break;
+            case "Edit":
+                selectedExpense.date = this.formatter.formatDateInput(selectedExpense.date);
+                this.setState({
+                    selectedExpense,
+                    showForm: true,
+                    buttonText: "Update"
+                });
+                break;
         }
+    }
+
+    handleChange = (e) => {
+        let expense = { ...this.state.selectedExpense };
+        expense[[e.target.id]] = e.target.value;
+
+        this.setState({
+            selectedExpense: expense
+        });
     }
 
     reload = () => {
@@ -84,6 +106,26 @@ export class ExpensesPage extends Component {
         });
     }
 
+    toggleForm = () => {
+        this.setState({
+            showForm: !this.state.showForm,
+            selectedExpense: this.getExpenseEmptyState(),
+            buttonText: "Add"
+        });
+    }
+
+    getExpenseEmptyState = () => {
+        return {
+            ownerId: null,
+            date: "",
+            type: "0",
+            count: "",
+            price: "",
+            details: "",
+            mileage: ""
+        };
+    }
+
     render() {
         if (this.state.isLoading) {
             return <p>Loading...</p>;
@@ -95,9 +137,18 @@ export class ExpensesPage extends Component {
 
                 <ExpensesContext.Provider value={{
                     expenses: this.state.expenses,
-                    handleButtonClick: this.handleButtonClick
+                    handleButtonClick: this.handleButtonClick,
+                    handleChange: this.handleChange,
+                    showForm: this.state.showForm,
+                    buttonText: this.state.buttonText,
+                    toggleForm: this.toggleForm,
+                    selectedExpense: this.state.selectedExpense
                 }}
                 >
+                    <Well>
+                        <ExpensesForm />
+                    </Well>
+
                     <ExpensesDetails />
                 </ExpensesContext.Provider>
 

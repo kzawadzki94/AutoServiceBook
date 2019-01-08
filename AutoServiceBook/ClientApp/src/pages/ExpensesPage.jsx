@@ -138,6 +138,10 @@ export class ExpensesPage extends Component {
                     isLoading: false,
                     selectedExpense
                 });
+            }).catch(err => {
+                this.setState({
+                    isLoading: false
+                });
             });
     }
 
@@ -187,6 +191,10 @@ export class ExpensesPage extends Component {
     render() {
         if (this.state.isLoading) {
             return <p>Loading...</p>;
+        }
+
+        if (!this.state.vehicles) {
+            return <p>You need to add a vehicle first!</p>;
         }
 
         return (

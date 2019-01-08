@@ -2,6 +2,7 @@ import {
     API_CONFIG
 } from '../../config/ApiConfig';
 import AuthenticationService from '../authentication/AuthenticationService';
+import toastr from 'toastr';
 
 export default class VehiclesService {
     constructor(auth) {
@@ -56,6 +57,7 @@ export default class VehiclesService {
 
     updateOdometerIfNeeded(id, newMileage) {
         if (!newMileage || newMileage === "" || newMileage === "0" || newMileage === 0) {
+            toastr.warning("Odometer value not provided", "Vehicle odometer not updated");
             return;
         }
 
@@ -64,8 +66,10 @@ export default class VehiclesService {
                 if (parseInt(newMileage) >= parseInt(response.mileage)) {
                     let v = Object.assign({}, response);
                     v.mileage = newMileage;
+                    toastr.success("Vehicle updated!", "Odometer value changed");
                     return this.editVehicle(v);
                 }
+                toastr.warning("Odometer value is less than before", "Vehicle odometer not updated");
             });
     }
 }

@@ -17,6 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using AutoServiceBook.MappingProfiles;
 using AutoServiceBook.Repositories;
+using AutoServiceBook.Services;
 
 namespace AutoServiceBook
 {
@@ -59,6 +60,7 @@ namespace AutoServiceBook
 
             services.AddScoped<IRepository<Vehicle>, VehiclesRepository>();
             services.AddScoped<IRepository<Expense>, ExpensesRepository>();
+            services.AddScoped<IStatsService, StatsService>();
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {

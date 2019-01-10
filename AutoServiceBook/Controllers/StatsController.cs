@@ -43,5 +43,17 @@ namespace AutoServiceBook.Controllers
 
             return Ok(distribution);
         }
+
+        //GET: api/stats/fuelusage/month
+        [HttpGet("fuelusage/{period}")]
+        public async Task<IActionResult> GetFuelUsage([FromRoute] string period, [FromQuery] long vehicleId)
+        {
+            if (period == string.Empty)
+                return NotFound();
+
+            var usage = await _statsService.GetFuelUsage(period, vehicleId);
+
+            return Ok(usage);
+        }
     }
 }

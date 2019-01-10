@@ -52,7 +52,22 @@ namespace AutoServiceBook.Services
                 distribution.Add(expenseType, percentage);
             }
 
-            return distribution;
+            return distribution * 100;
+        }
+
+        public async Task<double> GetFuelUsage(string period, long vehicleId)
+        {
+            var startDate = getStartDateForPeriod(period);
+
+            var fuelExpenses = getTotalCost(period, vehicleId, ExpenseType.Fuel).Where(e => e.Mileage != 0);
+
+            var longestMileage = fuelExpenses.Select(e => e.Mileage).Max();
+            var shortestMileage = fuelExpenses.Select(e => e.Mileage).Min();
+            var distance = longestMileage - shortestMileage;
+
+            var consumedFuel = fuelExpenses.Sum(e => e.Count);
+
+            return (double) consumedFuel / distance * 100;
         }
 
         private IEnumerable<Expense> getTotalCost(string period, long vehicleId, ExpenseType? type = null)

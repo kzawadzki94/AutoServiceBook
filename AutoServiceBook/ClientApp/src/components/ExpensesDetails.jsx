@@ -48,7 +48,7 @@ export class ExpensesDetails extends Component {
             },
             {
                 Header: 'Total',
-                Cell: props => props.original.count * props.original.price,
+                Cell: props => (props.original.count * props.original.price).toFixed(2),
                 minWidth: 50
             },
             {

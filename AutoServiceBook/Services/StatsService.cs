@@ -49,10 +49,10 @@ namespace AutoServiceBook.Services
             {
                 var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
                 var percentage = (double) totalCostOfType / (double) await GetCost(period, vehicleId);
-                distribution.Add(expenseType, percentage);
+                distribution.Add(expenseType, percentage * 100);
             }
 
-            return distribution * 100;
+            return distribution;
         }
 
         public async Task<double> GetFuelUsage(string period, long vehicleId)

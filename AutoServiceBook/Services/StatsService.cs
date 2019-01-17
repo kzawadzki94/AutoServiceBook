@@ -37,6 +37,19 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
+        public async Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId)
+        {
+            var costs = _expensesRepo.GetAll().Where(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
+
+            if (costs != null && vehicleId != 0)
+                costs = costs.Where(e => e.VehicleId == vehicleId);
+
+            if (costs is null || !costs.Any())
+                return 0;
+
+            return costs.Sum(e => e.Count * e.Price);
+        }
+
         public async Task<Dictionary<ExpenseType, double>> GetDistribution(string period, long vehicleId)
         {
             var distribution = new Dictionary<ExpenseType, double>();
@@ -48,7 +61,7 @@ namespace AutoServiceBook.Services
             foreach (ExpenseType expenseType in Enum.GetValues(typeof(ExpenseType)))
             {
                 var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
-                var percentage = (double) totalCostOfType / (double) await GetCost(period, vehicleId);
+                var percentage = (double)totalCostOfType / (double)await GetCost(period, vehicleId);
                 distribution.Add(expenseType, percentage * 100);
             }
 
@@ -67,7 +80,7 @@ namespace AutoServiceBook.Services
 
             var consumedFuel = fuelExpenses.Sum(e => e.Count);
 
-            return (double) consumedFuel / distance * 100;
+            return (double)consumedFuel / distance * 100;
         }
 
         private IEnumerable<Expense> getTotalCost(string period, long vehicleId, ExpenseType? type = null)
@@ -93,12 +106,15 @@ namespace AutoServiceBook.Services
                 case "month":
                     startDate = startDate.AddMonths(-1);
                     break;
+
                 case "year":
                     startDate = startDate.AddYears(-1);
                     break;
+
                 case "week":
                     startDate = startDate.AddDays(-7);
                     break;
+
                 default:
                     startDate = new DateTime();
                     break;

@@ -32,6 +32,19 @@ namespace AutoServiceBook.Controllers
             return Ok(cost);
         }
 
+        //GET: api/stats/costformonth/01/2019
+        [HttpGet("costformonth/{month}/{year}")]
+        public async Task<IActionResult> GetCostForGivenMonth([FromRoute] int month, [FromRoute] int year, [FromQuery] long vehicleId)
+        {
+            if (month < 1 || month > 12 || year < 0)
+                return NotFound();
+
+            var cost = await _statsService.GetCostForGivenMonth(month, year, vehicleId);
+
+            return Ok(cost);
+        }
+
+
         //GET: api/stats/distribution/month
         [HttpGet("distribution/{period}")]
         public async Task<IActionResult> GetDistribution([FromRoute] string period, [FromQuery] long vehicleId)

@@ -38,7 +38,7 @@ namespace AutoServiceBook.Services
 
         public decimal GetCostForGivenMonth(int month, int year, long vehicleId)
         {
-            var costs = _expensesRepo.GetAll().Where(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
+            var costs = _expensesRepo.GetAllWhere(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
 
             if (costs != null && vehicleId != 0)
                 costs = costs.Where(e => e.VehicleId == vehicleId);

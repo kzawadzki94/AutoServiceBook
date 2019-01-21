@@ -53,14 +53,20 @@ namespace AutoServiceBook.Services
         {
             var distribution = new Dictionary<ExpenseType, double>();
             var costs = getTotalCost(period, vehicleId);
-
             if (costs is null || !costs.Any())
                 return distribution;
-
             foreach (ExpenseType expenseType in Enum.GetValues(typeof(ExpenseType)))
             {
-                var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
-                var percentage = (double)totalCostOfType / (double)GetCost(period, vehicleId);
+                double percentage;
+                try
+                {
+                    var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
+                    percentage = (double)totalCostOfType / (double)GetCost(period, vehicleId);
+                } catch
+                {
+                    percentage = 0;
+                }
+
                 distribution.Add(expenseType, percentage * 100);
             }
 
@@ -72,12 +78,20 @@ namespace AutoServiceBook.Services
             var startDate = getStartDateForPeriod(period);
 
             var fuelExpenses = getTotalCost(period, vehicleId, ExpenseType.Fuel).Where(e => e.Mileage != 0);
+            ulong distance;
+            long consumedFuel;
 
-            var longestMileage = fuelExpenses.Select(e => e.Mileage).Max();
-            var shortestMileage = fuelExpenses.Select(e => e.Mileage).Min();
-            var distance = longestMileage - shortestMileage;
-
-            var consumedFuel = fuelExpenses.Sum(e => e.Count);
+            try
+            {
+                var longestMileage = fuelExpenses.Select(e => e.Mileage).Max();
+                var shortestMileage = fuelExpenses.Select(e => e.Mileage).Min();
+                distance = longestMileage - shortestMileage;
+                consumedFuel = fuelExpenses.Sum(e => e.Count);
+            }
+            catch
+            {
+                return 0;
+            }
 
             return (double)consumedFuel / distance * 100;
         }
@@ -86,7 +100,7 @@ namespace AutoServiceBook.Services
         {
             var startDate = getStartDateForPeriod(period);
 
-            var costs = _expensesRepo.GetAll().Where(e => e.Date > startDate);
+            var costs = _expensesRepo.GetAllWhere(e => e.Date > startDate);
 
             if (costs != null && vehicleId != 0)
                 costs = costs.Where(e => e.VehicleId == vehicleId);

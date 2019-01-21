@@ -37,6 +37,9 @@ namespace AutoServiceBook.Repositories
         public IEnumerable<Vehicle> GetAll()
             => _context.Vehicles;
 
+        public IEnumerable<Vehicle> GetAllWhere(Func<Vehicle, bool> predicate)
+            => _context.Vehicles.Where(predicate);
+
         public async Task<Vehicle> GetByIdAsync(long key)
         {
             var vehicle = await _context.Vehicles.FindAsync(key);

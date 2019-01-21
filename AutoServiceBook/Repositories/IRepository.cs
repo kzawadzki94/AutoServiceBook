@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AutoServiceBook.Repositories
@@ -10,6 +11,8 @@ namespace AutoServiceBook.Repositories
         Task DeleteAsync(long key);
 
         IEnumerable<T> GetAll();
+
+        IEnumerable<T> GetAllWhere(Func<T, bool> predicate);
 
         Task<T> GetByIdAsync(long key);
 

@@ -39,6 +39,9 @@ namespace AutoServiceBook.Repositories
         public IEnumerable<Expense> GetAll()
             => _context.Expenses;
 
+        public IEnumerable<Expense> GetAllWhere(Func<Expense, bool> predicate)
+            => _context.Expenses.Where(predicate);
+
         public async Task<Expense> GetByIdAsync(long key)
         {
             var expense = await _context.Expenses.FindAsync(key);

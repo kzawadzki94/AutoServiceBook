@@ -49,7 +49,7 @@ namespace AutoServiceBook.Controllers
             var user = mapper.Map<AppUser>(request);
             var createActionResult = await userManager.CreateAsync(user, request.Password);
 
-            return createActionResult.Succeeded ? Ok("User created") : (IActionResult)Ok(createActionResult.Errors.ToList());
+            return createActionResult.Succeeded ? Ok("User created") : Ok(createActionResult.Errors.ToList());
         }
     }
 }

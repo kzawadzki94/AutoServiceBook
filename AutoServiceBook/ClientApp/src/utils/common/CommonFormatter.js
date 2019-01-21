@@ -83,7 +83,6 @@ export default class CommonFormatter {
         }
     }
 
-
     formatDate(d) {
         if (d === undefined || d === null || d === "" || d === "string") {
             return "N/A";

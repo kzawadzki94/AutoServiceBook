@@ -6,10 +6,6 @@ import { ExpensesContext } from '../pages/ExpensesPage';
 
 
 export class ExpensesForm extends Component {
-    constructor() {
-        super();
-    }
-
     render() {
         if (!this.context.showForm) {
             return <Button bsStyle="primary" onClick={this.context.toggleForm}><Glyphicon glyph="plus" /> Add expense</Button>;

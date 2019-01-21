@@ -25,7 +25,6 @@ namespace AutoServiceBook.MappingProfiles
             // Expense
             CreateMap<ExpenseAddOrChangeRequest, Expense>();
             CreateMap<Expense, ExpenseResponse>();
-
         }
     }
 }

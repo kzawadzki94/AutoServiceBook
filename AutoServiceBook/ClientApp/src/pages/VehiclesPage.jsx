@@ -99,6 +99,10 @@ export class VehiclesPage extends Component {
                     showForm: false,
                     selectedVehicle: null
                 });
+                break;
+            default:
+                console.log("Wrong button action!");
+                break;
         }
     }
 

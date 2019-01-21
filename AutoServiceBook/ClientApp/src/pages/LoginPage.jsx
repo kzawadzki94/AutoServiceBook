@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import AccountService from '../utils/account/AccountService';
 import { EmailInput } from '../components/forms/EmailInput';

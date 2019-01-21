@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-import AuthenticationService from '../utils/authentication/AuthenticationService'
+import AuthenticationService from '../utils/authentication/AuthenticationService';
 
 export class AccountPage extends Component {
     constructor() {

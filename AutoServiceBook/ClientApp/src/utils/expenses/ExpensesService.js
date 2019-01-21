@@ -46,5 +46,4 @@ export default class ExpensesService {
             return Promise.resolve(response);
         });
     }
-
 }

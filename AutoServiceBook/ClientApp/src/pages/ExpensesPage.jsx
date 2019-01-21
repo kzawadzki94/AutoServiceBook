@@ -60,6 +60,9 @@ export class ExpensesPage extends Component {
                     buttonText: "Update"
                 });
                 break;
+            default:
+                console.log("Wrong button action!");
+                break;
         }
     }
 

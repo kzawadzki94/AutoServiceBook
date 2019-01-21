@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
 
 namespace AutoServiceBook.Swagger
 {

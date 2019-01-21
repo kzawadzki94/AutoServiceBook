@@ -20,6 +20,7 @@ namespace AutoServiceBook.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Expense> _repo;
+
         public ExpensesController(IRepository<Expense> repo, IMapper mapper)
         {
             _repo = repo;
@@ -114,6 +115,7 @@ namespace AutoServiceBook.Controllers
 
             return Ok(request);
         }
+
         private string getCurrentUserId()
             => HttpContext.User.FindFirst("user_id").Value;
     }

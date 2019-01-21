@@ -3,7 +3,6 @@ using AutoServiceBook.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AutoServiceBook.Services
 {
@@ -16,7 +15,7 @@ namespace AutoServiceBook.Services
             _expensesRepo = expensesRepo;
         }
 
-        public async Task<decimal> GetCost(string period, long vehicleId, string type = "")
+        public decimal GetCost(string period, long vehicleId, string type = "")
         {
             ExpenseType? expenseType = null;
             try
@@ -37,7 +36,7 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public async Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId)
+        public decimal GetCostForGivenMonth(int month, int year, long vehicleId)
         {
             var costs = _expensesRepo.GetAll().Where(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
 
@@ -50,7 +49,7 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public async Task<Dictionary<ExpenseType, double>> GetDistribution(string period, long vehicleId)
+        public Dictionary<ExpenseType, double> GetDistribution(string period, long vehicleId)
         {
             var distribution = new Dictionary<ExpenseType, double>();
             var costs = getTotalCost(period, vehicleId);
@@ -61,14 +60,14 @@ namespace AutoServiceBook.Services
             foreach (ExpenseType expenseType in Enum.GetValues(typeof(ExpenseType)))
             {
                 var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
-                var percentage = (double)totalCostOfType / (double)await GetCost(period, vehicleId);
+                var percentage = (double)totalCostOfType / (double)GetCost(period, vehicleId);
                 distribution.Add(expenseType, percentage * 100);
             }
 
             return distribution;
         }
 
-        public async Task<double> GetFuelUsage(string period, long vehicleId)
+        public double GetFuelUsage(string period, long vehicleId)
         {
             var startDate = getStartDateForPeriod(period);
 

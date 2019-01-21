@@ -11,6 +11,7 @@ namespace AutoServiceBook.Repositories
     public class VehiclesRepository : IRepository<Vehicle>
     {
         private readonly AppDbContext _context;
+
         public VehiclesRepository(AppDbContext context)
         {
             _context = context;

@@ -1,23 +1,23 @@
+using AutoMapper;
 using AutoServiceBook.Data;
+using AutoServiceBook.MappingProfiles;
+using AutoServiceBook.Models;
+using AutoServiceBook.Repositories;
+using AutoServiceBook.Services;
+using AutoServiceBook.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.AspNetCore.Identity;
-using AutoServiceBook.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using AutoServiceBook.Swagger;
+using Swashbuckle.AspNetCore.Swagger;
 using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
-using AutoServiceBook.MappingProfiles;
-using AutoServiceBook.Repositories;
-using AutoServiceBook.Services;
+using System.Text;
 
 namespace AutoServiceBook
 {

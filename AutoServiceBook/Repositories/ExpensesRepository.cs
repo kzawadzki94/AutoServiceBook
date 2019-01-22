@@ -36,11 +36,8 @@ namespace AutoServiceBook.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Expense> GetAll()
-            => _context.Expenses;
-
-        public IEnumerable<Expense> GetAllWhere(Func<Expense, bool> predicate)
-            => _context.Expenses.Where(predicate);
+        public async Task<IEnumerable<Expense>> GetAllAsync()
+            => await _context.Expenses.ToListAsync();
 
         public async Task<Expense> GetByIdAsync(long key)
         {

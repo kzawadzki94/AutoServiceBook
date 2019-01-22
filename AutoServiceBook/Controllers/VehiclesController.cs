@@ -65,8 +65,11 @@ namespace AutoServiceBook.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
-        public IEnumerable<Vehicle> GetVehicles()
-            => _repo.GetAll().Where(v => doesUserOwnVehicle(v.OwnerId));
+        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        {
+            var vehicles = await _repo.GetAllAsync();
+            return vehicles.Where(v => doesUserOwnVehicle(v.OwnerId));
+        }
 
         // POST: api/Vehicles
         [HttpPost]

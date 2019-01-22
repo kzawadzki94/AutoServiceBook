@@ -10,9 +10,7 @@ namespace AutoServiceBook.Repositories
 
         Task DeleteAsync(long key);
 
-        IEnumerable<T> GetAll();
-
-        IEnumerable<T> GetAllWhere(Func<T, bool> predicate);
+        Task<IEnumerable<T>> GetAllAsync();
 
         Task<T> GetByIdAsync(long key);
 

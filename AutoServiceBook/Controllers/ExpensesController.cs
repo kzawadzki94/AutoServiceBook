@@ -69,8 +69,12 @@ namespace AutoServiceBook.Controllers
 
         // GET: api/Expenses
         [HttpGet]
-        public IEnumerable<ExpenseResponse> GetExpenses()
-            => _repo.GetAll().Where(e => e.OwnerId == getCurrentUserId()).Select(e => _mapper.Map<ExpenseResponse>(e));
+        public async Task<IEnumerable<ExpenseResponse>> GetExpenses()
+        {
+            var expenses = await _repo.GetAllAsync();
+            expenses = expenses.Where(e => e.OwnerId == getCurrentUserId());
+            return expenses.Select(e => _mapper.Map<ExpenseResponse>(e));
+        }
 
         // POST: api/Expenses
         [HttpPost]

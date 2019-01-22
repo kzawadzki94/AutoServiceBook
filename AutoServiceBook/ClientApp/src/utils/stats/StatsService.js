@@ -10,8 +10,9 @@ export default class StatsService {
         this.statsEndpoint = `${API_CONFIG["URL_BASE"]}/stats`;
     }
 
-    getTotalCost(period, type, vehicleId) {
-        return this.auth.fetch(this.statsEndpoint + "/costs/" + period + "?" + queryString.stringify({type, vehicleId}), {
+    getCosts(period, vehicleId) {
+        console.log(this.statsEndpoint + "/costs/" + period + "?" + queryString.stringify({ vehicleId }));
+        return this.auth.fetch(this.statsEndpoint + "/costs/" + period + "?" + queryString.stringify({ vehicleId }), {
             method: 'GET'
         }).then(response => {
             return Promise.resolve(response);
@@ -27,15 +28,8 @@ export default class StatsService {
     }
 
     getDistribution(period, vehicleId) {
+        console.log(this.statsEndpoint + "/distribution/" + period + "?" + queryString.stringify({ vehicleId }));
         return this.auth.fetch(this.statsEndpoint + "/distribution/" + period + "?" + queryString.stringify({ vehicleId }), {
-            method: 'GET'
-        }).then(response => {
-            return Promise.resolve(response);
-        });
-    }
-
-    getFuelUsage(period, vehicleId) {
-        return this.auth.fetch(this.statsEndpoint + "/fuelusage/" + period + "?" + queryString.stringify({ vehicleId }), {
             method: 'GET'
         }).then(response => {
             return Promise.resolve(response);

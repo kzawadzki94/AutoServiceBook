@@ -3,6 +3,7 @@ using AutoServiceBook.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoServiceBook.Services
 {
@@ -15,20 +16,9 @@ namespace AutoServiceBook.Services
             _expensesRepo = expensesRepo;
         }
 
-        public decimal GetCost(string period, long vehicleId, string type = "")
+        public async Task<decimal> GetCost(StatsPeriod period, long vehicleId, ExpenseType? expenseType = null)
         {
-            ExpenseType? expenseType = null;
-            try
-            {
-                expenseType = type == string.Empty || type == null ? null : (ExpenseType?)Enum.Parse(typeof(ExpenseType), type);
-            }
-            catch
-            {
-                // enum parse failed
-                return 0;
-            }
-
-            var costs = getTotalCost(period, vehicleId, expenseType);
+            var costs = await getTotalCost(period, vehicleId, expenseType);
 
             if (costs is null || !costs.Any())
                 return 0;
@@ -36,9 +26,10 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public decimal GetCostForGivenMonth(int month, int year, long vehicleId)
+        public async Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId)
         {
-            var costs = _expensesRepo.GetAllWhere(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
+            var costs = await _expensesRepo.GetAllAsync();
+            costs = costs.Where(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
 
             if (costs != null && vehicleId != 0)
                 costs = costs.Where(e => e.VehicleId == vehicleId);
@@ -49,10 +40,10 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public Dictionary<ExpenseType, double> GetDistribution(string period, long vehicleId)
+        public async Task<Dictionary<ExpenseType, double>> GetDistribution(StatsPeriod period, long vehicleId)
         {
             var distribution = new Dictionary<ExpenseType, double>();
-            var costs = getTotalCost(period, vehicleId);
+            var costs = await getTotalCost(period, vehicleId);
             if (costs is null || !costs.Any())
                 return distribution;
             foreach (ExpenseType expenseType in Enum.GetValues(typeof(ExpenseType)))
@@ -61,7 +52,7 @@ namespace AutoServiceBook.Services
                 try
                 {
                     var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
-                    percentage = (double)totalCostOfType / (double)GetCost(period, vehicleId);
+                    percentage = (double)totalCostOfType / (double) await GetCost(period, vehicleId);
                 } catch
                 {
                     percentage = 0;
@@ -73,13 +64,15 @@ namespace AutoServiceBook.Services
             return distribution;
         }
 
-        public double GetFuelUsage(string period, long vehicleId)
+        public async Task<double> GetFuelUsage(StatsPeriod period, long vehicleId)
         {
             var startDate = getStartDateForPeriod(period);
 
-            var fuelExpenses = getTotalCost(period, vehicleId, ExpenseType.Fuel).Where(e => e.Mileage != 0);
+            var fuelExpenses = await getTotalCost(period, vehicleId, ExpenseType.Fuel);
+            fuelExpenses = fuelExpenses.Where(e => e.Mileage != 0);
             ulong distance;
             long consumedFuel;
+            double usage = 0;
 
             try
             {
@@ -87,20 +80,24 @@ namespace AutoServiceBook.Services
                 var shortestMileage = fuelExpenses.Select(e => e.Mileage).Min();
                 distance = longestMileage - shortestMileage;
                 consumedFuel = fuelExpenses.Sum(e => e.Count);
+
+                if (distance != 0)
+                    usage = (double)consumedFuel / distance * 100;
             }
             catch
             {
                 return 0;
             }
 
-            return (double)consumedFuel / distance * 100;
+            return usage;
         }
 
-        private IEnumerable<Expense> getTotalCost(string period, long vehicleId, ExpenseType? type = null)
+        private async Task<IEnumerable<Expense>> getTotalCost(StatsPeriod period, long vehicleId, ExpenseType? type = null)
         {
             var startDate = getStartDateForPeriod(period);
 
-            var costs = _expensesRepo.GetAllWhere(e => e.Date > startDate);
+            var costs = await _expensesRepo.GetAllAsync();
+            costs = costs.Where(e => e.Date > startDate);
 
             if (costs != null && vehicleId != 0)
                 costs = costs.Where(e => e.VehicleId == vehicleId);
@@ -111,23 +108,24 @@ namespace AutoServiceBook.Services
             return costs;
         }
 
-        private DateTime getStartDateForPeriod(string period)
+        private DateTime getStartDateForPeriod(StatsPeriod period)
         {
             var startDate = DateTime.Now;
             switch (period)
             {
-                case "month":
+                case StatsPeriod.Month:
                     startDate = startDate.AddMonths(-1);
                     break;
 
-                case "year":
+                case StatsPeriod.Year:
                     startDate = startDate.AddYears(-1);
                     break;
 
-                case "week":
+                case StatsPeriod.Week:
                     startDate = startDate.AddDays(-7);
                     break;
 
+                case StatsPeriod.AllTime:
                 default:
                     startDate = new DateTime();
                     break;

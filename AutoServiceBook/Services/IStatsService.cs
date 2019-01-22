@@ -1,16 +1,17 @@
 ﻿using AutoServiceBook.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoServiceBook.Services
 {
     public interface IStatsService
     {
-        decimal GetCost(string period, long vehicleId, string type = "");
+        Task<decimal> GetCost(StatsPeriod period, long vehicleId, ExpenseType? expenseType = null);
 
-        Dictionary<ExpenseType, double> GetDistribution(string period, long vehicleId);
+        Task<Dictionary<ExpenseType, double>> GetDistribution(StatsPeriod period, long vehicleId);
 
-        double GetFuelUsage(string period, long vehicleId);
+        Task<double> GetFuelUsage(StatsPeriod period, long vehicleId);
 
-        decimal GetCostForGivenMonth(int month, int year, long vehicleId);
+        Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId);
     }
 }

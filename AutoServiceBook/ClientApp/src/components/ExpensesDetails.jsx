@@ -81,7 +81,7 @@ export class ExpensesDetails extends Component {
         ];
 
         return (
-            <ReactTable data={this.context.expenses} columns={columns} defaultPageSize={10} defaultSorted={[{ id: "date", desc: true }]} />
+            <ReactTable data={this.context.expenses} columns={columns} defaultPageSize={20} defaultSorted={[{ id: "mileage", desc: true }]} />
         );
     }
 }

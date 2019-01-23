@@ -40,6 +40,9 @@ import {
 import {
     ExpensesForm
 } from './ExpensesForm';
+import {
+    StatsCost
+} from './StatsCost';
 
 export {
     Layout,
@@ -55,5 +58,6 @@ export {
     VehicleDetails,
     VehiclesForm,
     ExpensesDetails,
-    ExpensesForm
+    ExpensesForm,
+    StatsCost
 }

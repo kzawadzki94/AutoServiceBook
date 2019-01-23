@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel } from 'react-bootstrap';
+import { Button, ButtonGroup, ButtonToolbar, Glyphicon, Well, PanelGroup, Panel, Row, PageHeader } from 'react-bootstrap';
 import { VehicleDetails, VehiclesForm } from '../components/';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
@@ -7,6 +7,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import toastr from 'toastr';
 import 'toastr/build/toastr.css';
+import { PulseLoader } from 'react-spinners';
 
 export class VehiclesPage extends Component {
     constructor() {
@@ -116,7 +117,7 @@ export class VehiclesPage extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return (<p>Loading...</p>);
+            return <PulseLoader color="#1967be" loading={this.state.isLoading} />;
         }
 
         const vehiclesList = this.state.vehicles.map((v, i) =>
@@ -140,18 +141,24 @@ export class VehiclesPage extends Component {
 
         return (
             <div>
-                <h2>Vehicles</h2>
-
-                <Well>
-                    <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick} />
-                    <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} onSubmit={this.handleSubmit}>
-                        <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
-                    </VehiclesForm>
-                </Well>
-
-                <PanelGroup accordion id="vehicles-panel">
-                    {vehiclesList}
-                </PanelGroup>
+                <Row>
+                    <PageHeader>
+                        Vehicles
+                    </PageHeader>
+                </Row>
+                <Row>
+                    <Well>
+                        <AddButton showForm={this.state.showForm} onClick={this.handleButtonClick} />
+                        <VehiclesForm show={this.state.showForm} vehicle={this.state.selectedVehicle} onSubmit={this.handleSubmit}>
+                            <Button bsStyle="warning" onClick={this.handleButtonClick}>Cancel</Button>
+                        </VehiclesForm>
+                    </Well>
+                </Row>
+                <Row>
+                    <PanelGroup accordion id="vehicles-panel">
+                        {vehiclesList}
+                    </PanelGroup>
+                </Row>
             </div>
         );
     }

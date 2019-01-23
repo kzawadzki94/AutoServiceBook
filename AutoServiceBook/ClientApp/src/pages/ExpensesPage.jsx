@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Well } from 'react-bootstrap';
+import { Well, Row, PageHeader } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-table/react-table.css';
@@ -11,6 +11,7 @@ import ExpensesService from '../utils/expenses/ExpensesService';
 import VehiclesService from '../utils/vehicles/VehiclesService';
 import CommonFormatter from '../utils/common/CommonFormatter';
 import moment from 'moment';
+import { PulseLoader } from 'react-spinners';
 
 export const ExpensesContext = React.createContext();
 
@@ -193,7 +194,7 @@ export class ExpensesPage extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return <p>Loading...</p>;
+            return <PulseLoader color="#1967be" loading={this.state.isLoading} />;
         }
 
         if (!this.state.vehicles) {
@@ -202,7 +203,11 @@ export class ExpensesPage extends Component {
 
         return (
             <div>
-                <h2>Expenses</h2>
+                <Row>
+                    <PageHeader>
+                        Expenses
+                    </PageHeader>
+                </Row>
 
                 <ExpensesContext.Provider value={{
                     expenses: this.state.expenses,
@@ -216,11 +221,15 @@ export class ExpensesPage extends Component {
                     selectedExpense: this.state.selectedExpense
                 }}
                 >
-                    <Well>
-                        <ExpensesForm />
-                    </Well>
+                    <Row>
+                        <Well>
+                            <ExpensesForm />
+                        </Well>
+                    </Row>
 
-                    <ExpensesDetails />
+                    <Row>
+                        <ExpensesDetails />
+                    </Row>
                 </ExpensesContext.Provider>
 
             </div>

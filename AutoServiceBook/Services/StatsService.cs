@@ -1,4 +1,5 @@
 ﻿using AutoServiceBook.Models;
+using AutoServiceBook.Models.Responses;
 using AutoServiceBook.Repositories;
 using System;
 using System.Collections.Generic;
@@ -40,12 +41,14 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public async Task<Dictionary<ExpenseType, double>> GetDistribution(StatsPeriod period, long vehicleId)
+        public async Task<IEnumerable<StatsDistributionResponse>> GetDistribution(StatsPeriod period, long vehicleId)
         {
-            var distribution = new Dictionary<ExpenseType, double>();
+            var distribution = new List<StatsDistributionResponse>();
             var costs = await getTotalCost(period, vehicleId);
+
             if (costs is null || !costs.Any())
                 return distribution;
+
             foreach (ExpenseType expenseType in Enum.GetValues(typeof(ExpenseType)))
             {
                 double percentage;
@@ -53,12 +56,18 @@ namespace AutoServiceBook.Services
                 {
                     var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
                     percentage = (double)totalCostOfType / (double) await GetCost(period, vehicleId);
-                } catch
+                } catch (Exception)
                 {
                     percentage = 0;
                 }
 
-                distribution.Add(expenseType, percentage * 100);
+                if (double.IsNaN(percentage) || double.IsInfinity(percentage))
+                    percentage = 0;
+
+                distribution.Add(new StatsDistributionResponse() {
+                    Name = expenseType.ToString(),
+                    Value = Math.Round(percentage * 100, 2, MidpointRounding.AwayFromZero)
+                });
             }
 
             return distribution;
@@ -84,7 +93,7 @@ namespace AutoServiceBook.Services
                 if (distance != 0)
                     usage = (double)consumedFuel / distance * 100;
             }
-            catch
+            catch (Exception)
             {
                 return 0;
             }

@@ -3,9 +3,10 @@ import AuthenticationService from '../utils/authentication/AuthenticationService
 import StatsService from '../utils/stats/StatsService';
 import { Well } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 
-export class StatsCost extends Component {
+export class StatsDistributionChart extends Component {
 
     constructor() {
         super();
@@ -15,6 +16,7 @@ export class StatsCost extends Component {
             data: null,
             isLoading: true
         };
+        this.COLORS = ['#1967be', '#043A77', '#1A5E63', '#021833', '#213954', '#6295D1'];
     }
 
     componentDidMount() {
@@ -22,7 +24,7 @@ export class StatsCost extends Component {
     }
 
     fetchData = (period) => {
-        this.statsService.getCosts(period).then(response => {
+        this.statsService.getDistribution(period).then(response => {
             this.setState({
                 data: response,
                 isLoading: false
@@ -33,22 +35,22 @@ export class StatsCost extends Component {
     render() {
 
         if (this.state.isLoading) {
-            return <ClipLoader loading={this.state.isLoading} color="#1967be"/>;
+            return <ClipLoader loading={this.state.isLoading} color="#1967be" />;
+        } else if (!this.state.data || this.state.data.length === 0) {
+            return null;
         }
 
         return (
                 <Well>
                     <h3>{this.props.header}</h3>
-                    <p>
-                        <span><b>Total cost:</b> {this.state.data.total}</span><br />
-                        <span><b>Fuel cost:</b> {this.state.data.fuelCost}</span><br />
-                        <span><b>Service cost:</b> {this.state.data.serviceCost}</span><br />
-                        <span><b>Spare parts cost:</b> {this.state.data.sparePartCost}</span><br />
-                        <span><b>Insurance cost:</b> {this.state.data.insuranceCost}</span><br />
-                        <span><b>Other cost:</b> {this.state.data.otherCost}</span><br />
-                        <br />
-                        <span><b>Fuel usage:</b> {this.state.data.fuelUsage.toFixed(2)} l/100km</span>
-                    </p>
+                <PieChart width={250} height={100}>
+                    <Pie data={this.state.data} dataKey="value" label={(props) => { return props.name; }}>
+                        {
+                            this.state.data.map((entry, index) => <Cell key={index} fill={this.COLORS[index % this.COLORS.length]} />)
+                        }
+                    </Pie>
+                    <Tooltip formatter={(value) => { return value + " %"; }} />
+                    </PieChart>
                 </Well>
         );
     }

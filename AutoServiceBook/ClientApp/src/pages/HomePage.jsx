@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import { Jumbotron, Row, Col, PageHeader } from 'react-bootstrap';
-import { StatsCost } from '../components';
+import { StatsCost, StatsDistributionChart } from '../components';
 import moment from 'moment';
 
 
@@ -48,7 +48,24 @@ export class HomePage extends Component {
                     <Col md={3} sm={6}>
                         <StatsCost header="Last week" period="week" />
                     </Col>
+                </Row>
 
+                <Row>
+                    <Col md={3} sm={6}>
+                        <StatsDistributionChart header="Alltime distribution" period="alltime" />
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <StatsDistributionChart header="Last year distribution" period="year" />
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <StatsDistributionChart header="Last month distribution" period="month" />
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <StatsDistributionChart header="Last week distribution" period="week" />
+                    </Col>
                 </Row>
             </div>
         );

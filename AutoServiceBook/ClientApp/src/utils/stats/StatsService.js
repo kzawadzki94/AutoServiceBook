@@ -11,7 +11,6 @@ export default class StatsService {
     }
 
     getCosts(period, vehicleId) {
-        console.log(this.statsEndpoint + "/costs/" + period + "?" + queryString.stringify({ vehicleId }));
         return this.auth.fetch(this.statsEndpoint + "/costs/" + period + "?" + queryString.stringify({ vehicleId }), {
             method: 'GET'
         }).then(response => {
@@ -28,7 +27,6 @@ export default class StatsService {
     }
 
     getDistribution(period, vehicleId) {
-        console.log(this.statsEndpoint + "/distribution/" + period + "?" + queryString.stringify({ vehicleId }));
         return this.auth.fetch(this.statsEndpoint + "/distribution/" + period + "?" + queryString.stringify({ vehicleId }), {
             method: 'GET'
         }).then(response => {

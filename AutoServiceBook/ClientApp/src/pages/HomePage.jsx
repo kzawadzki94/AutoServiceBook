@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
-import { Jumbotron, Row, Col, PageHeader } from 'react-bootstrap';
-import { StatsCost, StatsDistributionChart } from '../components';
+import { Jumbotron, Row, Col, PageHeader, Well } from 'react-bootstrap';
+import { StatsCost, StatsDistributionChart, StatsLastYearChart } from '../components';
 import moment from 'moment';
 
 
@@ -17,7 +17,7 @@ export class HomePage extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Row>
                     <Jumbotron>
                         <h2>Welcome to the AutoServiceBook!</h2>
@@ -34,40 +34,48 @@ export class HomePage extends Component {
 
                 <Row>
                     <Col md={3} sm={6}>
-                        <StatsCost header="Alltime" period="alltime" />
+                        <Well><StatsCost header="Alltime" period="alltime" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsCost header="Last year" period="year" />
+                        <Well><StatsCost header="Last year" period="year" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsCost header="Last month" period="month" />
+                        <Well><StatsCost header="Last month" period="month" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsCost header="Last week" period="week" />
+                        <Well><StatsCost header="Last week" period="week" /></Well>
                     </Col>
                 </Row>
 
                 <Row>
                     <Col md={3} sm={6}>
-                        <StatsDistributionChart header="Alltime distribution" period="alltime" />
+                        <Well><StatsDistributionChart header="Alltime distribution" period="alltime" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsDistributionChart header="Last year distribution" period="year" />
+                        <Well><StatsDistributionChart header="Last year distribution" period="year" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsDistributionChart header="Last month distribution" period="month" />
+                        <Well><StatsDistributionChart header="Last month distribution" period="month" /></Well>
                     </Col>
 
                     <Col md={3} sm={6}>
-                        <StatsDistributionChart header="Last week distribution" period="week" />
+                        <Well><StatsDistributionChart header="Last week distribution" period="week" /></Well>
                     </Col>
                 </Row>
-            </div>
+
+                <Row>
+                    <Col lg={12}>
+                    <Well>
+                            <StatsLastYearChart header="Last year costs by month" />
+                        </Well>
+                    </Col>
+                </Row>
+            </React.Fragment>
         );
     }
 }

@@ -46,6 +46,9 @@ import {
 import {
     StatsDistributionChart
 } from './StatsDistributionChart';
+import {
+    StatsLastYearChart
+} from './StatsLastYearChart';
 
 export {
     Layout,
@@ -63,5 +66,6 @@ export {
     ExpensesDetails,
     ExpensesForm,
     StatsCost,
-    StatsDistributionChart
+    StatsDistributionChart,
+    StatsLastYearChart
 }

@@ -18,8 +18,8 @@ export default class StatsService {
         });
     }
 
-    getCostForGivenMonth(month, year, vehicleId) {
-        return this.auth.fetch(this.statsEndpoint + "/costformonth/" + month + "/" + year + "?" + queryString.stringify({ vehicleId }), {
+    getLastYearChartData(vehicleId) {
+        return this.auth.fetch(this.statsEndpoint + "/lastyearchart/" + queryString.stringify({ vehicleId }), {
             method: 'GET'
         }).then(response => {
             return Promise.resolve(response);

@@ -3,6 +3,7 @@ using AutoServiceBook.Models.Responses;
 using AutoServiceBook.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,18 +28,35 @@ namespace AutoServiceBook.Services
             return costs.Sum(e => e.Count * e.Price);
         }
 
-        public async Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId)
+        public async Task<IEnumerable<StatsLastYearChartDataResponse>> GetLastYearChartData(long vehicleId)
         {
-            var costs = await _expensesRepo.GetAllAsync();
-            costs = costs.Where(e => e.Date.Value.Year == year && e.Date.Value.Month == month);
+            var listOfDates = new List<DateTime>();
 
-            if (costs != null && vehicleId != 0)
-                costs = costs.Where(e => e.VehicleId == vehicleId);
+            for (int i = 0; i < 12; i++)
+                listOfDates.Add(DateTime.Now.AddMonths(-1 * i));
 
-            if (costs is null || !costs.Any())
-                return 0;
+            listOfDates.Reverse();
 
-            return costs.Sum(e => e.Count * e.Price);
+            var chartData = new List<StatsLastYearChartDataResponse>();
+
+            foreach (var date in listOfDates)
+            {
+                var costs = await _expensesRepo.GetAllAsync();
+                costs = costs.Where(e => e.Date.Value.Year == date.Year && e.Date.Value.Month == date.Month);
+
+                if (costs != null && vehicleId != 0)
+                    costs = costs.Where(e => e.VehicleId == vehicleId);
+
+                decimal totalCost = costs.Sum(e => e.Count * e.Price);
+
+                chartData.Add(new StatsLastYearChartDataResponse()
+                {
+                    Name = date.ToString("MMM y", CultureInfo.InvariantCulture),
+                    Value = totalCost
+                });
+            }
+
+            return chartData;
         }
 
         public async Task<IEnumerable<StatsDistributionResponse>> GetDistribution(StatsPeriod period, long vehicleId)
@@ -55,8 +73,9 @@ namespace AutoServiceBook.Services
                 try
                 {
                     var totalCostOfType = costs.Where(e => e.Type == expenseType).Sum(e => e.Count * e.Price);
-                    percentage = (double)totalCostOfType / (double) await GetCost(period, vehicleId);
-                } catch (Exception)
+                    percentage = (double)totalCostOfType / (double)await GetCost(period, vehicleId);
+                }
+                catch (Exception)
                 {
                     percentage = 0;
                 }
@@ -64,7 +83,8 @@ namespace AutoServiceBook.Services
                 if (double.IsNaN(percentage) || double.IsInfinity(percentage))
                     percentage = 0;
 
-                distribution.Add(new StatsDistributionResponse() {
+                distribution.Add(new StatsDistributionResponse()
+                {
                     Name = expenseType.ToString(),
                     Value = Math.Round(percentage * 100, 2, MidpointRounding.AwayFromZero)
                 });

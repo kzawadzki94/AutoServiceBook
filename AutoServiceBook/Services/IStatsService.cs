@@ -13,6 +13,6 @@ namespace AutoServiceBook.Services
 
         Task<double> GetFuelUsage(StatsPeriod period, long vehicleId);
 
-        Task<decimal> GetCostForGivenMonth(int month, int year, long vehicleId);
+        Task<IEnumerable<StatsLastYearChartDataResponse>> GetLastYearChartData(long vehicleId);
     }
 }

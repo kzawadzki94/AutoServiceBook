@@ -13,11 +13,19 @@ import {
 import {
     RegisterPage
 } from './RegisterPage';
+import {
+    VehiclesPage
+} from './VehiclesPage';
+import {
+    ExpensesPage
+} from './ExpensesPage';
 
 export {
     HomePage,
     LoginPage,
     LogoutPage,
     AccountPage,
-    RegisterPage
+    RegisterPage,
+    VehiclesPage,
+    ExpensesPage
 }

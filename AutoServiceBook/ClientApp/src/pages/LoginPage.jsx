@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import AccountService from '../utils/account/AccountService';
 import { EmailInput } from '../components/forms/EmailInput';
 import { PasswordInput } from '../components/forms/PasswordInput';
 import UserCredentialsValidator from '../utils/validation/UserCredentialsValidator';
+import toastr from 'toastr';
+import 'toastr/build/toastr.css';
 
 export class LoginPage extends Component {
     constructor() {
@@ -18,24 +20,7 @@ export class LoginPage extends Component {
             email: '',
             password: '',
             loginError: null
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Login</h2>
-
-                <form onSubmit={this.handleSubmit}>
-                    <EmailInput onChange={this.handleChange} />
-                    <PasswordInput onChange={this.handleChange} />
-
-                    <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Log in</Button>
-
-                    <AlertBox error={this.state.loginError}></AlertBox>
-                </form>
-            </div>
-        );
+        };
     }
 
     componentDidUpdate() {
@@ -65,33 +50,30 @@ export class LoginPage extends Component {
 
         this.auth.login(this.state.email, this.state.password)
             .then(response => {
-                this.account.fetchInfo();
                 this.props.history.replace('/');
+                toastr.success("User logged in.");
             })
             .catch(error => {
-                this.setState({
-                    loginError: error
-                });
+                if (error === "User not found!") {
+                    toastr.error("Login error", "User not found in database.");
+                } else {
+                    toastr.error("Login error", "Invalid email or password.");
+                }
             });
     }
-}
 
-function AlertBox(props) {
-    if (props.error === null) {
-        return null;
+    render() {
+        return (
+            <div>
+                <h2>Login</h2>
+
+                <form onSubmit={this.handleSubmit}>
+                    <EmailInput onChange={this.handleChange} />
+                    <PasswordInput onChange={this.handleChange} />
+
+                    <Button type="submit" disabled={this.state.buttonDisabled} bsStyle="primary">Log in</Button>
+                </form>
+            </div>
+        );
     }
-
-    let message = 'Error';
-
-    if (props.error.response.status === 404) {
-        message = 'User not found in database.';
-    } else if (props.error.response.status === 401) {
-        message = 'Incorrect email or password.';
-    }
-
-    return (
-        <div className="with-padding-vertical">
-            <Alert bsStyle="danger"><p>{message}</p></Alert>
-        </div>
-    );
 }

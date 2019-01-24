@@ -24,7 +24,6 @@ export class LogoutPage extends Component {
             if (this.state.progress > 100) {
                 clearInterval(intervalId);
                 this.auth.logout();
-                this.account.destroyInfo();
                 this.props.history.push('/login');
             }
 

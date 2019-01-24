@@ -28,7 +28,7 @@ export class PasswordInput extends Component {
         this.props.onChange(e);
         this.setState(
             {
-                [e.target.id]: e.target.value
+                password: e.target.value
             }
         );
     }

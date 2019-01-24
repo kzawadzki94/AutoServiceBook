@@ -1,26 +1,81 @@
 import React, { Component } from 'react';
+import AuthenticationService from '../utils/authentication/AuthenticationService';
+import { Jumbotron, Row, Col, PageHeader, Well } from 'react-bootstrap';
+import { StatsCost, StatsDistributionChart, StatsLastYearChart } from '../components';
+import moment from 'moment';
+
 
 export class HomePage extends Component {
-  displayName = HomePage.name
 
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we've also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+    constructor() {
+        super();
+        this.auth = new AuthenticationService();
+    }
+
+    componentDidMount() {
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <Row>
+                    <Jumbotron>
+                        <h2>Welcome to the AutoServiceBook!</h2>
+                        <p>Store and manage information about your vehicle expenses!</p>
+                        <small>Krzysztof Zawadzki &copy; {moment().format("YYYY")}</small>
+                    </Jumbotron>
+                </Row>
+
+                <Row>
+                    <PageHeader>
+                        Statistics
+                    </PageHeader>
+                </Row>
+
+                <Row>
+                    <Col md={3} sm={6}>
+                        <Well><StatsCost header="Alltime" period="alltime" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsCost header="Last year" period="year" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsCost header="Last month" period="month" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsCost header="Last week" period="week" /></Well>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col md={3} sm={6}>
+                        <Well><StatsDistributionChart header="Alltime distribution" period="alltime" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsDistributionChart header="Last year distribution" period="year" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsDistributionChart header="Last month distribution" period="month" /></Well>
+                    </Col>
+
+                    <Col md={3} sm={6}>
+                        <Well><StatsDistributionChart header="Last week distribution" period="week" /></Well>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col lg={12}>
+                    <Well>
+                            <StatsLastYearChart header="Last year costs by month" />
+                        </Well>
+                    </Col>
+                </Row>
+            </React.Fragment>
+        );
+    }
 }

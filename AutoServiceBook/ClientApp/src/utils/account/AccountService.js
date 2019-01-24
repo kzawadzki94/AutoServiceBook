@@ -24,23 +24,10 @@ export default class AccountService {
     }
 
     fetchInfo() {
-        this.auth.fetch(this.accountEndpoint, {
+        return this.auth.fetch(this.accountEndpoint, {
             method: 'GET'
         }).then(response => {
-            this.saveInfo(response);
             return Promise.resolve(response);
         });
-    }
-
-    saveInfo(info) {
-        localStorage.setItem('user', JSON.stringify(info));
-    }
-
-    getInfo() {
-        return JSON.parse(localStorage.getItem('user'));
-    }
-
-    destroyInfo() {
-        localStorage.removeItem('user');
     }
 }

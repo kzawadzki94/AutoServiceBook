@@ -5,10 +5,11 @@ using AutoServiceBook.Models.Responses;
 
 namespace AutoServiceBook.MappingProfiles
 {
-    public class AppUserMappingsProfile : Profile
+    public class ModelMappingsProfile : Profile
     {
-        public AppUserMappingsProfile()
+        public ModelMappingsProfile()
         {
+            // AppUser
             CreateMap<AppUser, UserInfoResponse>();
 
             CreateMap<RegisterAccountRequest, AppUser>()
@@ -17,6 +18,13 @@ namespace AutoServiceBook.MappingProfiles
             .ForMember(x => x.FirstName, o => o.MapFrom(x => x.FirstName))
             .ForMember(x => x.LastName, o => o.MapFrom(x => x.LastName))
             .ForAllOtherMembers(x => x.Ignore());
+
+            // Vehicle
+            CreateMap<VehicleAddOrChangeRequest, Vehicle>();
+
+            // Expense
+            CreateMap<ExpenseAddOrChangeRequest, Expense>();
+            CreateMap<Expense, ExpenseResponse>();
         }
     }
 }

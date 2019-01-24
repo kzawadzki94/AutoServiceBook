@@ -15,7 +15,7 @@ namespace AutoServiceBook.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -72,6 +72,86 @@ namespace AutoServiceBook.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("AutoServiceBook.Models.Expense", b =>
+                {
+                    b.Property<long>("ExpenseId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Count");
+
+                    b.Property<DateTime?>("Date");
+
+                    b.Property<string>("Details");
+
+                    b.Property<decimal>("Mileage")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("Type");
+
+                    b.Property<long>("VehicleId");
+
+                    b.HasKey("ExpenseId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("AutoServiceBook.Models.Vehicle", b =>
+                {
+                    b.Property<long>("VehicleId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EngineDisplacement");
+
+                    b.Property<int>("EngineHorsepower");
+
+                    b.Property<int>("FuelType");
+
+                    b.Property<DateTime?>("InsuranceExpireDate");
+
+                    b.Property<string>("InsuranceNumber");
+
+                    b.Property<string>("LicencePlate")
+                        .IsRequired();
+
+                    b.Property<string>("Make")
+                        .IsRequired();
+
+                    b.Property<decimal>("Mileage")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
+
+                    b.Property<string>("Model")
+                        .IsRequired();
+
+                    b.Property<DateTime?>("NextServiceDate");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<DateTime?>("RegisterDate");
+
+                    b.Property<int>("Type");
+
+                    b.Property<string>("Vin");
+
+                    b.Property<int?>("Year")
+                        .IsRequired();
+
+                    b.HasKey("VehicleId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -182,6 +262,22 @@ namespace AutoServiceBook.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("AutoServiceBook.Models.Expense", b =>
+                {
+                    b.HasOne("AutoServiceBook.Models.Vehicle", "Vehicle")
+                        .WithMany("Expenses")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoServiceBook.Models.Vehicle", b =>
+                {
+                    b.HasOne("AutoServiceBook.Models.AppUser", "Owner")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

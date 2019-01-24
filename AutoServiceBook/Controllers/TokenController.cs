@@ -16,7 +16,7 @@ namespace AutoServiceBook.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : Controller
+    public class TokenController : ControllerBase
     {
         private readonly IConfiguration configuration;
         private readonly UserManager<AppUser> userManager;
@@ -49,7 +49,10 @@ namespace AutoServiceBook.Controllers
             var claims = new[]
             {
                     new Claim(JwtRegisteredClaimNames.Sub, request.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                    new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                    new Claim("user_id", user.Id.ToString())
             };
 
             var token = new JwtSecurityToken

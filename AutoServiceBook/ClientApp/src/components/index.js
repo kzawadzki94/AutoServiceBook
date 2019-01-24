@@ -16,6 +16,39 @@ import {
 import {
     LastNameInput
 } from './forms/LastNameInput';
+import {
+    SelectInput
+} from './forms/SelectInput';
+import {
+    TextInput
+} from './forms/TextInput';
+import {
+    NumericInput
+} from './forms/NumericInput';
+import {
+    DateInput
+} from './forms/DateInput';
+import {
+    VehicleDetails
+} from './VehicleDetails';
+import {
+    VehiclesForm
+} from './VehiclesForm';
+import {
+    ExpensesDetails
+} from './ExpensesDetails';
+import {
+    ExpensesForm
+} from './ExpensesForm';
+import {
+    StatsCost
+} from './StatsCost';
+import {
+    StatsDistributionChart
+} from './StatsDistributionChart';
+import {
+    StatsLastYearChart
+} from './StatsLastYearChart';
 
 export {
     Layout,
@@ -23,5 +56,16 @@ export {
     EmailInput,
     PasswordInput,
     FirstNameInput,
-    LastNameInput
+    LastNameInput,
+    SelectInput,
+    TextInput,
+    NumericInput,
+    DateInput,
+    VehicleDetails,
+    VehiclesForm,
+    ExpensesDetails,
+    ExpensesForm,
+    StatsCost,
+    StatsDistributionChart,
+    StatsLastYearChart
 }

@@ -48,7 +48,7 @@ export class StatsDistributionChart extends Component {
                 <h3>{this.props.header}</h3>
                 <ResponsiveContainer height={100} width="100%">
                     <PieChart>
-                        <Pie data={this.state.data} dataKey="value" label={(props) => { return props.name; }}>
+                        <Pie data={this.state.data.filter((e) => e.value !== 0)} dataKey="value" label={(props) => { return props.name; }}>
                             {
                                 this.state.data.map((entry, index) => <Cell key={index} fill={this.COLORS[index % this.COLORS.length]} />)
                             }

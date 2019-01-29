@@ -2,7 +2,7 @@
 import AuthenticationService from '../utils/authentication/AuthenticationService';
 import StatsService from '../utils/stats/StatsService';
 import { ClipLoader } from 'react-spinners';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 export class StatsLastYearChart extends Component {
@@ -46,13 +46,13 @@ export class StatsLastYearChart extends Component {
             <React.Fragment>
                 <h3>{this.props.header}</h3>
                 <ResponsiveContainer height={300} width="100%">
-                <LineChart data={this.state.data}>
+                <BarChart data={this.state.data}>
                     <XAxis dataKey="name" />
                     <YAxis dataKey="value"/>
                     <CartesianGrid strokeDasharray="1 1" />
                     <Tooltip />
-                    <Line type="linear" dataKey="value" stroke="#1967be"/>
-            </LineChart>
+                    <Bar dataKey="value" fill="#1967be"/>
+                </BarChart>
             </ResponsiveContainer>
             </React.Fragment>
         );
